@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)https://ogqvigik.gensparkspace.com/ -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUD ACADEMY - 전문 미용교육</title>
+    <link href="./index_files/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./index_files/all.min.css">
+    <script src="./index_files/chart.js.다운로드"></script>
+    <script src="./index_files/email.min.js.다운로드"></script>
+    <style>
+        .course-image {
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            object-position: center;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .course-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .admin-course-card {
+            position: relative;
+        }
+        .admin-course-card:hover .admin-buttons {
+            opacity: 1;
+        }
+        .admin-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+    </style>
+<style>
+    .genspark-notice-dialog {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .genspark-notice-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      box-sizing: border-box;
+      padding: 10px 30px 30px 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+    }
+
+    .genspark-notice-title {
+      color: #000;
+      font-family: Arial;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; 
+    }
+
+    .genspark-notice-list {
+      margin: 24px 0;
+      
+      color: #606366;
+      font-family: Arial;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      padding-left: 12px;
+    }
+
+    .genspark-notice-list li {
+      margin-bottom: 12px;
+      list-style-type: disc;
+    }
+
+    .genspark-notice-list li a {
+      color: #606366;
+      text-decoration: underline;
+    }
+
+    .genspark-notice-checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      gap: 10px;
+
+      color: #232425;
+
+      font-family: Arial;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .genspark-notice-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+      
+    .genspark-notice-ok {
+      color: #232425;
+
+      text-align: center;
+      font-family: Arial;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; 
+
+      cursor: pointer;
+      display: flex;
+      height: 40px;
+      padding: 6px 14px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      align-self: stretch;
+      border-radius: 8px;
+      border: 1px solid #000;
+      box-sizing: border-box;
+      width: 100%;
+    }
+  </style></head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-red-600 text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-red-600">BUD ACADEMY</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="https://ogqvigik.gensparkspace.com/#" onclick="showPage(&#39;main&#39;)" class="text-gray-700 hover:text-red-600">교육과정</a>
+                    <a href="https://ogqvigik.gensparkspace.com/#" onclick="showPage(&#39;about&#39;)" class="text-gray-700 hover:text-red-600">회사소개</a>
+                </nav>
+                <div id="authButtons" class="flex space-x-2">
+                    <button onclick="showLogin()" class="px-4 py-2 text-gray-700 hover:text-red-600">로그인</button>
+                    <button onclick="showRegister()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">회원가입</button>
+                </div>
+                <div id="userMenu" class="hidden flex items-center space-x-4">
+                    <span id="userName" class="text-gray-700"></span>
+                    <button onclick="logout()" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">로그아웃</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Main Page -->
+        <div id="mainPage">
+            <!-- Hero Section -->
+            <section class="bg-gradient-to-r from-red-600 to-red-800 text-white py-16 rounded-lg mb-12">
+                <div class="text-center">
+                    <h2 class="text-4xl font-bold mb-4">전문 미용교육의 새로운 기준</h2>
+                    <p class="text-xl mb-8">버드아카데미에서 당신의 미용 실력을 한 단계 업그레이드하세요</p>
+                    <div class="space-x-4">
+                        <button onclick="showPage(&#39;courses&#39;)" class="px-8 py-3 bg-white text-red-600 rounded-lg font-semibold hover:bg-gray-100">교육과정 보기</button>
+                        <button onclick="showRegister()" class="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-red-600">수강신청</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Course Categories -->
+            <section class="mb-12">
+                <h3 class="text-3xl font-bold text-center mb-8">교육 카테고리</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                    <div class="text-center p-4 bg-red-100 rounded-lg hover:bg-red-200 cursor-pointer" onclick="filterCourses(&#39;cut&#39;)">
+                        <i class="fas fa-cut text-3xl text-red-600 mb-2"></i>
+                        <p class="font-semibold">컷</p>
+                    </div>
+                    <div class="text-center p-4 bg-purple-100 rounded-lg hover:bg-purple-200 cursor-pointer" onclick="filterCourses(&#39;color&#39;)">
+                        <i class="fas fa-palette text-3xl text-purple-600 mb-2"></i>
+                        <p class="font-semibold">컬러</p>
+                    </div>
+                    <div class="text-center p-4 bg-blue-100 rounded-lg hover:bg-blue-200 cursor-pointer" onclick="filterCourses(&#39;perm&#39;)">
+                        <i class="fas fa-sync-alt text-3xl text-blue-600 mb-2"></i>
+                        <p class="font-semibold">펌</p>
+                    </div>
+                    <div class="text-center p-4 bg-green-100 rounded-lg hover:bg-green-200 cursor-pointer" onclick="filterCourses(&#39;dye&#39;)">
+                        <i class="fas fa-tint text-3xl text-green-600 mb-2"></i>
+                        <p class="font-semibold">염색</p>
+                    </div>
+                    <div class="text-center p-4 bg-yellow-100 rounded-lg hover:bg-yellow-200 cursor-pointer" onclick="filterCourses(&#39;marketing&#39;)">
+                        <i class="fas fa-chart-line text-3xl text-yellow-600 mb-2"></i>
+                        <p class="font-semibold">마케팅</p>
+                    </div>
+                    <div class="text-center p-4 bg-indigo-100 rounded-lg hover:bg-indigo-200 cursor-pointer" onclick="filterCourses(&#39;management&#39;)">
+                        <i class="fas fa-users text-3xl text-indigo-600 mb-2"></i>
+                        <p class="font-semibold">관리자</p>
+                    </div>
+                    <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer" onclick="filterCourses(&#39;theory&#39;)">
+                        <i class="fas fa-book text-3xl text-gray-600 mb-2"></i>
+                        <p class="font-semibold">비실기</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Course Type Filter -->
+            <section class="mb-8">
+                <div class="flex justify-center space-x-4">
+                    <button onclick="filterByType(&#39;all&#39;)" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 filter-btn active">전체</button>
+                    <button onclick="filterByType(&#39;look-learn&#39;)" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 filter-btn">Look &amp; Learn</button>
+                    <button onclick="filterByType(&#39;hands-on&#39;)" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 filter-btn">Hands-On</button>
+                </div>
+            </section>
+
+            <!-- Popular Courses -->
+            <section>
+                <h3 class="text-3xl font-bold text-center mb-8">인기 교육과정</h3>
+                <div id="coursesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="./index_files/photo-1562322140-8baeececf3df" alt="기초 헤어컷 마스터클래스" class="course-image w-full h-48">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">Look &amp; Learn</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">컷</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">기초 헤어컷 마스터클래스</h3>
+                        <p class="text-gray-600 mb-4">기초적인 헤어컷 기법부터 고급 기술까지 체계적으로 학습합니다.</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>기간: 3일</p>
+                            <p>수강인원: 8/12명</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₩250,000</span>
+                            <button onclick="enrollCourse(1)" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="./index_files/photo-1560869713-2b7b0bb8d5e1" alt="컬러링 심화과정" class="course-image w-full h-48">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">Hands-On</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-800">컬러</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">컬러링 심화과정</h3>
+                        <p class="text-gray-600 mb-4">최신 컬러링 기법과 트렌드를 배우는 심화 과정입니다.</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>기간: 2일</p>
+                            <p>수강인원: 12/15명</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₩180,000</span>
+                            <button onclick="enrollCourse(2)" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="./index_files/photo-1522337360788-8b13dee7a37e" alt="펌 스타일링 완성반" class="course-image w-full h-48">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">Hands-On</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">펌</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">펌 스타일링 완성반</h3>
+                        <p class="text-gray-600 mb-4">다양한 펌 기법을 익히고 스타일링 완성도를 높입니다.</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>기간: 3일</p>
+                            <p>수강인원: 7/10명</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₩220,000</span>
+                            <button onclick="enrollCourse(3)" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="./index_files/photo-1460925895917-afdab827c52f" alt="살롱 마케팅 전략" class="course-image w-full h-48">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">Look &amp; Learn</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">마케팅</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">살롱 마케팅 전략</h3>
+                        <p class="text-gray-600 mb-4">효과적인 살롱 마케팅 전략과 고객 관리 노하우를 배웁니다.</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>기간: 1일</p>
+                            <p>수강인원: 16/20명</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₩150,000</span>
+                            <button onclick="enrollCourse(4)" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="./index_files/photo-1549236177-d5c9ae98bce9" alt="영석 기법 마스터" class="course-image w-full h-48">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">Hands-On</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">염색</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">영석 기법 마스터</h3>
+                        <p class="text-gray-600 mb-4">전문적인 영석 기법을 배우는 어드밴스 과정입니다.</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>기간: 4일</p>
+                            <p>수강인원: 5/8명</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₩280,000</span>
+                            <button onclick="enrollCourse(5)" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="./index_files/photo-1507003211169-0a1dd7228f2d" alt="살롱 관리자 양성과정" class="course-image w-full h-48">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">Look &amp; Learn</span>
+                            <span class="text-xs px-2 py-1 rounded-full bg-indigo-100 text-indigo-800">관리자교육</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">살롱 관리자 양성과정</h3>
+                        <p class="text-gray-600 mb-4">효과적인 살롱 운영과 팀 관리 기술을 익힙니다.</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>기간: 2일</p>
+                            <p>수강인원: 11/15명</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₩200,000</span>
+                            <button onclick="enrollCourse(6)" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminPage" class="hidden">
+            <div class="bg-gray-800 text-white p-4 rounded-lg mb-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">관리자 대시보드</h2>
+                    <button onclick="logout()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">로그아웃</button>
+                </div>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="mb-6">
+                <div class="flex space-x-4 border-b">
+                    <button onclick="showAdminTab(&#39;courses&#39;)" class="px-4 py-2 border-b-2 border-red-600 text-red-600 admin-tab active">교육과정 관리</button>
+                    <button onclick="showAdminTab(&#39;students&#39;)" class="px-4 py-2 text-gray-600 hover:text-red-600 admin-tab">수강생 관리</button>
+                    <button onclick="showAdminTab(&#39;stats&#39;)" class="px-4 py-2 text-gray-600 hover:text-red-600 admin-tab">통계</button>
+                </div>
+            </div>
+
+            <!-- Course Management Tab -->
+            <div id="adminCoursesTab">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">교육과정 관리</h3>
+                    <button onclick="showAddCourseModal()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                        <i class="fas fa-plus mr-2"></i>새 교육과정 추가
+                    </button>
+                </div>
+                
+                <div id="adminCoursesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 동적으로 생성됨 -->
+                </div>
+            </div>
+
+            <!-- Student Management Tab -->
+            <div id="adminStudentsTab" class="hidden">
+                <h3 class="text-2xl font-bold mb-6">수강생 관리</h3>
+                <div id="studentsList" class="space-y-4">
+                    <!-- 동적으로 생성됨 -->
+                </div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div id="adminStatsTab" class="hidden">
+                <h3 class="text-2xl font-bold mb-6">통계</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold mb-4">월별 수강 신청</h4>
+                        <div class="chart-container">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold mb-4">카테고리별 인기도</h4>
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-96 max-w-full">
+            <h3 class="text-2xl font-bold mb-6 text-center">로그인</h3>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">이메일</label>
+                    <input type="email" id="loginEmail" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">비밀번호</label>
+                    <input type="password" id="loginPassword" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                </div>
+                <button type="submit" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700">로그인</button>
+                <div class="text-center mt-4">
+                    <a href="https://ogqvigik.gensparkspace.com/#" onclick="showForgotPassword()" class="text-red-600 hover:underline">비밀번호를 잊으셨나요?</a>
+                </div>
+                <div class="text-center mt-2">
+                    <button type="button" onclick="closeModal(&#39;loginModal&#39;)" class="text-gray-600 hover:text-gray-800">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-96 max-w-full">
+            <h3 class="text-2xl font-bold mb-6 text-center">회원가입</h3>
+            <form onsubmit="handleRegister(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">이름</label>
+                    <input type="text" id="registerName" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">이메일 (아이디)</label>
+                    <input type="email" id="registerEmail" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">비밀번호</label>
+                    <input type="password" id="registerPassword" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">비밀번호 재확인</label>
+                    <input type="password" id="registerPasswordConfirm" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                    <div id="passwordMatch" class="text-sm mt-1"></div>
+                </div>
+                <button type="submit" id="registerSubmit" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700">회원가입</button>
+                <div class="text-center mt-4">
+                    <button type="button" onclick="closeModal(&#39;registerModal&#39;)" class="text-gray-600 hover:text-gray-800">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-96 max-w-full">
+            <h3 class="text-2xl font-bold mb-6 text-center">이메일 인증</h3>
+            <p class="text-gray-600 mb-4 text-center">입력하신 이메일로 인증코드가 발송되었습니다.</p>
+            <form onsubmit="handleVerification(event)">
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">인증코드 (6자리)</label>
+                    <input type="text" id="verificationCode" maxlength="6" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600 text-center text-2xl">
+                </div>
+                <button type="submit" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700">인증 확인</button>
+                <div class="text-center mt-4">
+                    <button type="button" onclick="resendVerificationCode()" class="text-red-600 hover:underline">인증코드 재발송</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Course Enrollment Modal -->
+    <div id="enrollmentModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-96 max-w-full">
+            <h3 class="text-2xl font-bold mb-6 text-center">수강신청</h3>
+            <div id="enrollmentContent">
+                <!-- 동적으로 생성됨 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Course Modal -->
+    <div id="courseModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-full max-w-2xl max-h-full overflow-y-auto">
+            <h3 id="courseModalTitle" class="text-2xl font-bold mb-6 text-center">교육과정 추가</h3>
+            <form onsubmit="handleCourseSubmit(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">교육명</label>
+                        <input type="text" id="courseName" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">카테고리</label>
+                        <select id="courseCategory" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                            <option value="">선택하세요</option>
+                            <option value="cut">컷</option>
+                            <option value="color">컬러</option>
+                            <option value="perm">펌</option>
+                            <option value="dye">염색</option>
+                            <option value="marketing">마케팅</option>
+                            <option value="management">관리자교육</option>
+                            <option value="theory">비실기</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">교육 타입</label>
+                        <select id="courseType" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                            <option value="">선택하세요</option>
+                            <option value="look-learn">Look &amp; Learn</option>
+                            <option value="hands-on">Hands-On</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">수강료</label>
+                        <input type="number" id="coursePrice" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">교육 기간</label>
+                        <input type="text" id="courseDuration" required="" placeholder="예: 3일" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">최대 인원</label>
+                        <input type="number" id="courseMaxStudents" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">교육 설명</label>
+                    <textarea id="courseDescription" required="" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600"></textarea>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">교육 이미지</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <input type="file" id="courseImage" accept="image/*" class="hidden" onchange="previewImage(this)">
+                        <div id="imagePreview" class="mb-4"></div>
+                        <button type="button" onclick="document.getElementById(&#39;courseImage&#39;).click()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                            이미지 선택
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">정사각형 이미지를 권장합니다</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700">저장</button>
+                    <button type="button" onclick="closeModal(&#39;courseModal&#39;)" class="flex-1 bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-96 max-w-full">
+            <h3 class="text-2xl font-bold mb-6 text-center">비밀번호 찾기</h3>
+            <form onsubmit="handleForgotPassword(event)">
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">가입 시 사용한 이메일</label>
+                    <input type="email" id="forgotEmail" required="" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-red-600">
+                </div>
+                <button type="submit" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700">임시 비밀번호 발송</button>
+                <div class="text-center mt-4">
+                    <button type="button" onclick="closeModal(&#39;forgotPasswordModal&#39;)" class="text-gray-600 hover:text-gray-800">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // EmailJS 설정
+        const EMAILJS_CONFIG = {
+            publicKey: "QdWROGZSRyli8pS1x",
+            serviceId: "bud_academy",
+            verificationTemplateId: "template_4g44vwk",
+            passwordTemplateId: "template_8jcgwkh"
+        };
+
+        // EmailJS 초기화
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+
+        // 전역 변수
+        let currentUser = null;
+        let currentPage = 'main';
+        let currentFilter = 'all';
+        let currentType = 'all';
+        let editingCourseId = null;
+        let verificationData = null;
+
+        // 샘플 교육과정 데이터
+        const sampleCourses = [
+            {
+                id: 1,
+                name: "기초 헤어컷 마스터클래스",
+                description: "기초적인 헤어컷 기법부터 고급 기술까지 체계적으로 학습합니다.",
+                category: "cut",
+                type: "look-learn",
+                price: 250000,
+                duration: "3일",
+                maxStudents: 12,
+                currentStudents: 8,
+                image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400&h=400&fit=crop"
+            },
+            {
+                id: 2,
+                name: "컬러링 심화과정",
+                description: "최신 컬러링 기법과 트렌드를 배우는 심화 과정입니다.",
+                category: "color",
+                type: "hands-on",
+                price: 180000,
+                duration: "2일",
+                maxStudents: 15,
+                currentStudents: 12,
+                image: "https://images.unsplash.com/photo-1560869713-2b7b0bb8d5e1?w=400&h=400&fit=crop"
+            },
+            {
+                id: 3,
+                name: "펌 스타일링 완성반",
+                description: "다양한 펌 기법을 익히고 스타일링 완성도를 높입니다.",
+                category: "perm",
+                type: "hands-on",
+                price: 220000,
+                duration: "3일",
+                maxStudents: 10,
+                currentStudents: 7,
+                image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=400&fit=crop"
+            },
+            {
+                id: 4,
+                name: "살롱 마케팅 전략",
+                description: "효과적인 살롱 마케팅 전략과 고객 관리 노하우를 배웁니다.",
+                category: "marketing",
+                type: "look-learn",
+                price: 150000,
+                duration: "1일",
+                maxStudents: 20,
+                currentStudents: 16,
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=400&fit=crop"
+            },
+            {
+                id: 5,
+                name: "영석 기법 마스터",
+                description: "전문적인 영석 기법을 배우는 어드밴스 과정입니다.",
+                category: "dye",
+                type: "hands-on",
+                price: 280000,
+                duration: "4일",
+                maxStudents: 8,
+                currentStudents: 5,
+                image: "https://images.unsplash.com/photo-1549236177-d5c9ae98bce9?w=400&h=400&fit=crop"
+            },
+            {
+                id: 6,
+                name: "살롱 관리자 양성과정",
+                description: "효과적인 살롱 운영과 팀 관리 기술을 익힙니다.",
+                category: "management",
+                type: "look-learn",
+                price: 200000,
+                duration: "2일",
+                maxStudents: 15,
+                currentStudents: 11,
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"
+            }
+        ];
+
+        // 로컬 스토리지에서 데이터 로드
+        function loadCourses() {
+            const saved = localStorage.getItem('budAcademyCourses');
+            return saved ? JSON.parse(saved) : sampleCourses;
+        }
+
+        function saveCourses(courses) {
+            localStorage.setItem('budAcademyCourses', JSON.stringify(courses));
+        }
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            displayCourses();
+            
+            // 비밀번호 확인 실시간 검증
+            const passwordConfirm = document.getElementById('registerPasswordConfirm');
+            const password = document.getElementById('registerPassword');
+            
+            function checkPasswordMatch() {
+                const matchDiv = document.getElementById('passwordMatch');
+                const submitBtn = document.getElementById('registerSubmit');
+                
+                if (passwordConfirm.value && password.value) {
+                    if (password.value === passwordConfirm.value) {
+                        matchDiv.innerHTML = '<span class="text-green-600">✓ 비밀번호가 일치합니다</span>';
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-50');
+                    } else {
+                        matchDiv.innerHTML = '<span class="text-red-600">✗ 비밀번호가 일치하지 않습니다</span>';
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-50');
+                    }
+                } else {
+                    matchDiv.innerHTML = '';
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50');
+                }
+            }
+            
+            password.addEventListener('input', checkPasswordMatch);
+            passwordConfirm.addEventListener('input', checkPasswordMatch);
+        });
+
+        // 로그인 상태 확인
+        function checkLoginStatus() {
+            const user = sessionStorage.getItem('currentUser');
+            if (user) {
+                currentUser = JSON.parse(user);
+                updateAuthUI(true);
+                
+                if (currentUser.email === 'igcorp' && currentUser.isAdmin) {
+                    showPage('admin');
+                }
+            }
+        }
+
+        // 로그인 UI 업데이트
+        function updateAuthUI(isLoggedIn) {
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            
+            if (isLoggedIn) {
+                authButtons.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+                userName.textContent = currentUser.name || currentUser.email;
+            } else {
+                authButtons.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+            }
+        }
+
+        // 페이지 표시
+        function showPage(page) {
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('adminPage').classList.add('hidden');
+            
+            if (page === 'admin') {
+                document.getElementById('adminPage').classList.remove('hidden');
+                displayAdminCourses();
+                displayStudents();
+                showAdminTab('courses');
+            } else {
+                document.getElementById('mainPage').classList.remove('hidden');
+            }
+            
+            currentPage = page;
+        }
+
+        // 모달 표시/숨김
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+            if (modalId === 'courseModal') {
+                editingCourseId = null;
+                document.getElementById('courseModalTitle').textContent = '교육과정 추가';
+            }
+        }
+
+        // 로그인 모달
+        function showLogin() {
+            showModal('loginModal');
+        }
+
+        // 회원가입 모달
+        function showRegister() {
+            showModal('registerModal');
+        }
+
+        // 비밀번호 찾기 모달
+        function showForgotPassword() {
+            closeModal('loginModal');
+            showModal('forgotPasswordModal');
+        }
+
+        // 로그인 처리
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // 관리자 로그인 체크
+            if (email === 'igcorp' && password === 'Igcorp192837!') {
+                currentUser = {
+                    email: 'igcorp',
+                    name: '관리자',
+                    isAdmin: true,
+                    verified: true
+                };
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateAuthUI(true);
+                closeModal('loginModal');
+                showPage('admin');
+                return;
+            }
+            
+            // 일반 사용자 로그인
+            const users = JSON.parse(localStorage.getItem('budAcademyUsers') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                if (!user.verified) {
+                    alert('이메일 인증이 완료되지 않았습니다.');
+                    return;
+                }
+                
+                currentUser = user;
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateAuthUI(true);
+                closeModal('loginModal');
+                alert('로그인되었습니다!');
+            } else {
+                alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+            }
+        }
+
+        // 회원가입 처리
+        function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerPasswordConfirm').value;
+            
+            if (password !== confirmPassword) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('budAcademyUsers') || '[]');
+            if (users.find(u => u.email === email)) {
+                alert('이미 가입된 이메일입니다.');
+                return;
+            }
+            
+            // 인증코드 생성 및 이메일 발송
+            const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            verificationData = {
+                name,
+                email,
+                password,
+                verificationCode
+            };
+            
+            sendVerificationEmail(email, name, verificationCode);
+            closeModal('registerModal');
+            showModal('verificationModal');
+        }
+
+        // 인증 이메일 발송
+        function sendVerificationEmail(email, name, code) {
+            const templateParams = {
+                user_name: name,
+                user_email: email,
+                verification_code: code,
+                from_email: 'noreply@budacademy.com'
+            };
+            
+            emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.verificationTemplateId, templateParams)
+                .then(() => {
+                    alert('인증코드가 이메일로 발송되었습니다!');
+                })
+                .catch(() => {
+                    alert('이메일 발송에 실패했습니다. 다시 시도해주세요.');
+                });
+        }
+
+        // 이메일 인증 처리
+        function handleVerification(event) {
+            event.preventDefault();
+            const inputCode = document.getElementById('verificationCode').value;
+            
+            if (inputCode === verificationData.verificationCode) {
+                const users = JSON.parse(localStorage.getItem('budAcademyUsers') || '[]');
+                const newUser = {
+                    id: Date.now(),
+                    name: verificationData.name,
+                    email: verificationData.email,
+                    password: verificationData.password,
+                    verified: true,
+                    registeredAt: new Date().toISOString()
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('budAcademyUsers', JSON.stringify(users));
+                
+                closeModal('verificationModal');
+                alert('회원가입이 완료되었습니다! 로그인해주세요.');
+                verificationData = null;
+            } else {
+                alert('인증코드가 올바르지 않습니다.');
+            }
+        }
+
+        // 인증코드 재발송
+        function resendVerificationCode() {
+            if (verificationData) {
+                const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+                verificationData.verificationCode = newCode;
+                sendVerificationEmail(verificationData.email, verificationData.name, newCode);
+            }
+        }
+
+        // 비밀번호 찾기 처리
+        function handleForgotPassword(event) {
+            event.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+            
+            const users = JSON.parse(localStorage.getItem('budAcademyUsers') || '[]');
+            const user = users.find(u => u.email === email);
+            
+            if (user) {
+                const tempPassword = Math.random().toString(36).slice(-8);
+                user.password = tempPassword;
+                localStorage.setItem('budAcademyUsers', JSON.stringify(users));
+                
+                const templateParams = {
+                    user_name: user.name,
+                    user_email: email,
+                    temp_password: tempPassword,
+                    from_email: 'noreply@budacademy.com'
+                };
+                
+                emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.passwordTemplateId, templateParams)
+                    .then(() => {
+                        alert('임시 비밀번호가 이메일로 발송되었습니다!');
+                        closeModal('forgotPasswordModal');
+                    })
+                    .catch(() => {
+                        alert('이메일 발송에 실패했습니다.');
+                    });
+            } else {
+                alert('등록되지 않은 이메일입니다.');
+            }
+        }
+
+        // 로그아웃
+        function logout() {
+            currentUser = null;
+            sessionStorage.removeItem('currentUser');
+            updateAuthUI(false);
+            showPage('main');
+        }
+
+        // 교육과정 표시
+        function displayCourses() {
+            const courses = loadCourses();
+            const container = document.getElementById('coursesList');
+            
+            let filteredCourses = courses;
+            
+            if (currentFilter !== 'all') {
+                filteredCourses = filteredCourses.filter(course => course.category === currentFilter);
+            }
+            
+            if (currentType !== 'all') {
+                filteredCourses = filteredCourses.filter(course => course.type === currentType);
+            }
+            
+            container.innerHTML = filteredCourses.map(course => `
+                <div class="course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="${course.image}" alt="${course.name}" class="course-image w-full h-48">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full ${getTypeColor(course.type)}">${course.type === 'look-learn' ? 'Look & Learn' : 'Hands-On'}</span>
+                            <span class="text-xs px-2 py-1 rounded-full ${getCategoryColor(course.category)}">${getCategoryName(course.category)}</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${course.name}</h3>
+                        <p class="text-gray-600 mb-4">${course.description}</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>기간: ${course.duration}</p>
+                            <p>수강인원: ${course.currentStudents}/${course.maxStudents}명</p>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-red-600">₩${course.price.toLocaleString()}</span>
+                            <button onclick="enrollCourse(${course.id})" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">수강신청</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 관리자 교육과정 표시
+        function displayAdminCourses() {
+            const courses = loadCourses();
+            const container = document.getElementById('adminCoursesList');
+            
+            container.innerHTML = courses.map(course => `
+                <div class="admin-course-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="admin-buttons">
+                        <button onclick="editCourse(${course.id})" class="px-2 py-1 bg-blue-600 text-white rounded text-sm mr-1">수정</button>
+                        <button onclick="deleteCourse(${course.id})" class="px-2 py-1 bg-red-600 text-white rounded text-sm">삭제</button>
+                    </div>
+                    <img src="${course.image}" alt="${course.name}" class="course-image w-full h-48">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs px-2 py-1 rounded-full ${getTypeColor(course.type)}">${course.type === 'look-learn' ? 'Look & Learn' : 'Hands-On'}</span>
+                            <span class="text-xs px-2 py-1 rounded-full ${getCategoryColor(course.category)}">${getCategoryName(course.category)}</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">${course.name}</h3>
+                        <p class="text-gray-600 text-sm mb-3">${course.description}</p>
+                        <div class="text-sm text-gray-500 mb-3">
+                            <p>기간: ${course.duration}</p>
+                            <p>수강인원: ${course.currentStudents}/${course.maxStudents}명</p>
+                            <p>수강료: ₩${course.price.toLocaleString()}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 교육과정 수정
+        function editCourse(courseId) {
+            const courses = loadCourses();
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            editingCourseId = courseId;
+            document.getElementById('courseModalTitle').textContent = '교육과정 수정';
+            
+            // 폼에 기존 데이터 채우기
+            document.getElementById('courseName').value = course.name;
+            document.getElementById('courseCategory').value = course.category;
+            document.getElementById('courseType').value = course.type;
+            document.getElementById('coursePrice').value = course.price;
+            document.getElementById('courseDuration').value = course.duration;
+            document.getElementById('courseMaxStudents').value = course.maxStudents;
+            document.getElementById('courseDescription').value = course.description;
+            
+            // 이미지 미리보기
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = `<img src="${course.image}" alt="현재 이미지" class="w-32 h-32 object-cover rounded mx-auto">`;
+            
+            showModal('courseModal');
+        }
+
+        // 교육과정 삭제
+        function deleteCourse(courseId) {
+            if (confirm('정말로 이 교육과정을 삭제하시겠습니까?')) {
+                let courses = loadCourses();
+                courses = courses.filter(c => c.id !== courseId);
+                saveCourses(courses);
+                displayAdminCourses();
+                displayCourses();
+            }
+        }
+
+        // 교육과정 추가 모달
+        function showAddCourseModal() {
+            editingCourseId = null;
+            document.getElementById('courseModalTitle').textContent = '교육과정 추가';
+            document.querySelector('#courseModal form').reset();
+            document.getElementById('imagePreview').innerHTML = '';
+            showModal('courseModal');
+        }
+
+        // 교육과정 추가/수정 처리
+        function handleCourseSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('courseName').value;
+            const category = document.getElementById('courseCategory').value;
+            const type = document.getElementById('courseType').value;
+            const price = parseInt(document.getElementById('coursePrice').value);
+            const duration = document.getElementById('courseDuration').value;
+            const maxStudents = parseInt(document.getElementById('courseMaxStudents').value);
+            const description = document.getElementById('courseDescription').value;
+            const imageFile = document.getElementById('courseImage').files[0];
+            
+            let courses = loadCourses();
+            
+            if (editingCourseId) {
+                // 수정
+                const courseIndex = courses.findIndex(c => c.id === editingCourseId);
+                if (courseIndex !== -1) {
+                    courses[courseIndex] = {
+                        ...courses[courseIndex],
+                        name,
+                        category,
+                        type,
+                        price,
+                        duration,
+                        maxStudents,
+                        description
+                    };
+                    
+                    if (imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            courses[courseIndex].image = e.target.result;
+                            saveCourses(courses);
+                            displayAdminCourses();
+                            displayCourses();
+                            closeModal('courseModal');
+                        };
+                        reader.readAsDataURL(imageFile);
+                    } else {
+                        saveCourses(courses);
+                        displayAdminCourses();
+                        displayCourses();
+                        closeModal('courseModal');
+                    }
+                }
+            } else {
+                // 추가
+                if (!imageFile) {
+                    alert('이미지를 선택해주세요.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newCourse = {
+                        id: Date.now(),
+                        name,
+                        category,
+                        type,
+                        price,
+                        duration,
+                        maxStudents,
+                        description,
+                        image: e.target.result,
+                        currentStudents: 0
+                    };
+                    
+                    courses.push(newCourse);
+                    saveCourses(courses);
+                    displayAdminCourses();
+                    displayCourses();
+                    closeModal('courseModal');
+                };
+                reader.readAsDataURL(imageFile);
+            }
+        }
+
+        // 이미지 미리보기
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="미리보기" class="w-32 h-32 object-cover rounded mx-auto">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // 수강신청
+        function enrollCourse(courseId) {
+            if (!currentUser) {
+                alert('로그인이 필요합니다.');
+                showLogin();
+                return;
+            }
+            
+            if (currentUser.isAdmin) {
+                alert('관리자는 수강신청할 수 없습니다.');
+                return;
+            }
+            
+            const courses = loadCourses();
+            const course = courses.find(c => c.id === courseId);
+            
+            if (course.currentStudents >= course.maxStudents) {
+                alert('수강 정원이 마감되었습니다.');
+                return;
+            }
+            
+            // 수강신청 모달 표시
+            const content = document.getElementById('enrollmentContent');
+            content.innerHTML = `
+                <div class="mb-4">
+                    <img src="${course.image}" alt="${course.name}" class="w-full h-32 object-cover rounded">
+                </div>
+                <h4 class="text-xl font-bold mb-2">${course.name}</h4>
+                <p class="text-gray-600 mb-4">${course.description}</p>
+                <div class="bg-gray-50 p-4 rounded mb-4">
+                    <p><strong>강사:</strong> 김미영 원장</p>
+                    <p><strong>기간:</strong> ${course.duration}</p>
+                    <p><strong>날짜:</strong> 매주 월/수/금 2-6시</p>
+                    <p><strong>장소:</strong> 강남점</p>
+                    <p><strong>수강료:</strong> ₩${course.price.toLocaleString()}</p>
+                    <p><strong>수강인원:</strong> ${course.currentStudents}/${course.maxStudents}명</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-info-circle text-yellow-500 mr-2"></i>
+                    <span class="text-sm text-gray-600">수강신청을 완료하시겠습니까?</span>
+                </div>
+                <div class="flex space-x-4 mt-6">
+                    <button onclick="confirmEnrollment(${courseId})" class="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700">수강신청하기</button>
+                    <button onclick="closeModal('enrollmentModal')" class="flex-1 bg-gray-600 text-white py-2 rounded hover:bg-gray-700">취소</button>
+                </div>
+            `;
+            
+            showModal('enrollmentModal');
+        }
+
+        // 수강신청 확인
+        function confirmEnrollment(courseId) {
+            let courses = loadCourses();
+            const courseIndex = courses.findIndex(c => c.id === courseId);
+            
+            if (courseIndex !== -1) {
+                courses[courseIndex].currentStudents++;
+                saveCourses(courses);
+                
+                // 수강생 기록 저장
+                const enrollments = JSON.parse(localStorage.getItem('budAcademyEnrollments') || '[]');
+                enrollments.push({
+                    id: Date.now(),
+                    userId: currentUser.id,
+                    courseId: courseId,
+                    enrolledAt: new Date().toISOString(),
+                    status: 'enrolled'
+                });
+                localStorage.setItem('budAcademyEnrollments', JSON.stringify(enrollments));
+                
+                displayCourses();
+                displayAdminCourses();
+                closeModal('enrollmentModal');
+                alert('수강신청이 완료되었습니다!');
+            }
+        }
+
+        // 필터링
+        function filterCourses(category) {
+            currentFilter = category;
+            displayCourses();
+        }
+
+        function filterByType(type) {
+            currentType = type;
+            
+            // 버튼 스타일 업데이트
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-red-600', 'text-white', 'active');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('bg-red-600', 'text-white', 'active');
+            
+            displayCourses();
+        }
+
+        // 관리자 탭
+        function showAdminTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => {
+                t.classList.remove('border-red-600', 'text-red-600', 'active');
+                t.classList.add('text-gray-600');
+            });
+            
+            event.target.classList.remove('text-gray-600');
+            event.target.classList.add('border-red-600', 'text-red-600', 'active');
+            
+            document.getElementById('adminCoursesTab').classList.add('hidden');
+            document.getElementById('adminStudentsTab').classList.add('hidden');
+            document.getElementById('adminStatsTab').classList.add('hidden');
+            
+            document.getElementById('admin' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab').classList.remove('hidden');
+            
+            if (tab === 'stats') {
+                setTimeout(renderCharts, 100);
+            }
+        }
+
+        // 수강생 표시
+        function displayStudents() {
+            const enrollments = JSON.parse(localStorage.getItem('budAcademyEnrollments') || '[]');
+            const users = JSON.parse(localStorage.getItem('budAcademyUsers') || '[]');
+            const courses = loadCourses();
+            
+            const container = document.getElementById('studentsList');
+            
+            const studentData = enrollments.map(enrollment => {
+                const user = users.find(u => u.id === enrollment.userId);
+                const course = courses.find(c => c.id === enrollment.courseId);
+                return {
+                    ...enrollment,
+                    userName: user ? user.name : '알 수 없음',
+                    userEmail: user ? user.email : '알 수 없음',
+                    courseName: course ? course.name : '알 수 없음'
+                };
+            });
+            
+            container.innerHTML = studentData.map(student => `
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-semibold">${student.userName}</h4>
+                            <p class="text-gray-600">${student.userEmail}</p>
+                            <p class="text-sm text-gray-500">${student.courseName}</p>
+                            <p class="text-xs text-gray-400">신청일: ${new Date(student.enrolledAt).toLocaleDateString()}</p>
+                        </div>
+                        <div>
+                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">${student.status === 'enrolled' ? '수강중' : '완료'}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 차트 렌더링
+        function renderCharts() {
+            // 월별 수강 신청 차트
+            const monthlyCtx = document.getElementById('monthlyChart');
+            if (monthlyCtx) {
+                const enrollments = JSON.parse(localStorage.getItem('budAcademyEnrollments') || '[]');
+                const monthlyData = {};
+                
+                enrollments.forEach(enrollment => {
+                    const month = new Date(enrollment.enrolledAt).toISOString().slice(0, 7);
+                    monthlyData[month] = (monthlyData[month] || 0) + 1;
+                });
+                
+                new Chart(monthlyCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(monthlyData),
+                        datasets: [{
+                            label: '수강 신청 수',
+                            data: Object.values(monthlyData),
+                            borderColor: 'rgb(220, 53, 69)',
+                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+            
+            // 카테고리별 인기도 차트
+            const categoryCtx = document.getElementById('categoryChart');
+            if (categoryCtx) {
+                const courses = loadCourses();
+                const categoryData = {};
+                
+                courses.forEach(course => {
+                    const categoryName = getCategoryName(course.category);
+                    categoryData[categoryName] = (categoryData[categoryName] || 0) + course.currentStudents;
+                });
+                
+                new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(categoryData),
+                        datasets: [{
+                            data: Object.values(categoryData),
+                            backgroundColor: [
+                                '#dc3545', '#6f42c1', '#007bff', '#28a745',
+                                '#ffc107', '#6610f2', '#6c757d'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        }
+
+        // 유틸리티 함수들
+        function getTypeColor(type) {
+            return type === 'look-learn' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800';
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                cut: 'bg-red-100 text-red-800',
+                color: 'bg-purple-100 text-purple-800',
+                perm: 'bg-blue-100 text-blue-800',
+                dye: 'bg-green-100 text-green-800',
+                marketing: 'bg-yellow-100 text-yellow-800',
+                management: 'bg-indigo-100 text-indigo-800',
+                theory: 'bg-gray-100 text-gray-800'
+            };
+            return colors[category] || 'bg-gray-100 text-gray-800';
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                cut: '컷',
+                color: '컬러',
+                perm: '펌',
+                dye: '염색',
+                marketing: '마케팅',
+                management: '관리자교육',
+                theory: '비실기'
+            };
+            return names[category] || category;
+        }
+    </script>
+
+
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDgu2iwMYAiURx5NqCq4jj7ojTXvjYoVa5edzualtCeoKSo%2FlmoqWRk3b9pi4wNk4g6QOc20chcKq5z4WI%2BThEjIkYbmi0pgWYT%2F2lgb7Ii8kZTlpG6TF5mZE2Mulyx818q26STa6wSNa4tN%2BN0VYmYKgeDAu6wuX6Yw0aOw3BqJTRIAiWjWSsgzSu0vb3C3xzA8tURGJ03pQHwUE7EguFTW2VV%2FxvWBetP%2FxSDobW48MOTg2tOLsp7H1m2LHrpDpvZLyyaT4db7gSLGKFUA8XYGrqV8qjw42sC9RdKNtz1%2Fr%2FkGZmFlhewNDFbnH0Ivs%2FhSgRw5FUFUd%2Bq1qNuZiXtulAR8lmQfcXH4XFHaPjh6sNmpxC8%2B4K9fn59LcdF4GimX0%2FtMdKUZMZvhc%2FqMsO2Qpcx7sknqIwfjiP8IlsHW97eUG%2FZlUjVpTTdeqiqWSSb4W2ijkTSNwYt748Do86lfqH4giHi39Doop6A8CYcXRUrFqAxIK4gGjTNcswp0899rfZ48e%2B%2F3ZWGBALgukh9U%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDgu2iwMYAiURx5NqCq4jj7ojTXvjYoVa5edzualtCeoKSo/lmoqWRk3b9pi4wNk4g6QOc20chcKq5z4WI+ThEjIkYbmi0pgWYT/2lgb7Ii8kZTlpG6TF5mZE2Mulyx818q26STa6wSNa4tN+N0VYmYKgeDAu6wuX6Yw0aOw3BqJTRIAiWjWSsgzSu0vb3C3xzA8tURGJ03pQHwUE7EguFTW2VV/xvWBetP/xSDobW48MOTg2tOLsp7H1m2LHrpDpvZLyyaT4db7gSLGKFUA8XYGrqV8qjw42sC9RdKNtz1/r/kGZmFlhewNDFbnH0Ivs/hSgRw5FUFUd+q1qNuZiXtulAR8lmQfcXH4XFHaPjh6sNmpxC8+4K9fn59LcdF4GimX0/tMdKUZMZvhc/qMsO2Qpcx7sknqIwfjiP8IlsHW97eUG/ZlUjVpTTdeqiqWSSb4W2ijkTSNwYt748Do86lfqH4giHi39Doop6A8CYcXRUrFqAxIK4gGjTNcswp0899rfZ48e+/3ZWGBALgukh9U=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="./index_files/notice_dialog.js.다운로드"></script>
+    <div class="genspark-notice-dialog" style="display: none;">
+      <div class="genspark-notice-content">
+        <h2 class="genspark-notice-title">이 사이트는 사용자가 만들었습니다. 참고하세요:</h2>
+        <ul class="genspark-notice-list">
+          <li>콘텐츠에 부정확한 정보가 포함될 수 있으니, 사용하기 전에 정보를 확인하세요.</li>
+          <li>부적절한 콘텐츠를 발견하시면 <a href="mailto:support@genspark.ai">support@genspark.ai</a>로 연락해 주세요.</li>
+        </ul>
+        <div class="genspark-notice-checkbox">
+          <input type="checkbox" id="genspark-dont-show">
+          <label for="genspark-dont-show">이 메시지를 다시 표시하지 않음.</label>
+        </div>
+        <div class="genspark-notice-actions">
+          <button class="genspark-notice-ok">확인</button>
+        </div>
+      </div>
+    </div></body></html>
