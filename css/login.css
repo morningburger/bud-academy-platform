@@ -307,3 +307,40 @@
     margin: 0 auto 24px;
     animation: successPulse 0.6s ease-out;
 }
+
+/* Admin Login Section */
+.admin-login-section {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.admin-login-section p {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+}
+
+.btn-admin {
+    background: var(--gray-800);
+    color: var(--white);
+    padding: 10px 24px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-admin:hover {
+    background: var(--black);
+    transform: scale(1.05);
+}
+
+.btn-admin i {
+    font-size: 14px;
+}
