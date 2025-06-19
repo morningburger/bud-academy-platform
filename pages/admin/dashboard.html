@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - BUD ACADEMY</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Admin Sidebar -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <a href="/" class="admin-logo">
+                    <div class="admin-logo-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="admin-logo-text">BUD ADMIN</div>
+                </a>
+            </div>
+            
+            <nav class="admin-nav">
+                <a href="/pages/admin/dashboard.html" class="admin-nav-item active">
+                    <i class="fas fa-tachometer-alt admin-nav-icon"></i>
+                    <span>대시보드</span>
+                </a>
+                <a href="/pages/admin/courses.html" class="admin-nav-item">
+                    <i class="fas fa-book admin-nav-icon"></i>
+                    <span>교육과정 관리</span>
+                </a>
+                <a href="/pages/admin/students.html" class="admin-nav-item">
+                    <i class="fas fa-users admin-nav-icon"></i>
+                    <span>수강생 관리</span>
+                </a>
+                <a href="/pages/admin/instructors.html" class="admin-nav-item">
+                    <i class="fas fa-chalkboard-teacher admin-nav-icon"></i>
+                    <span>강사 관리</span>
+                </a>
+                <a href="/pages/admin/enrollments.html" class="admin-nav-item">
+                    <i class="fas fa-clipboard-list admin-nav-icon"></i>
+                    <span>수강 신청 관리</span>
+                </a>
+                <a href="/pages/admin/analytics.html" class="admin-nav-item">
+                    <i class="fas fa-chart-line admin-nav-icon"></i>
+                    <span>통계 분석</span>
+                </a>
+                <a href="/pages/admin/settings.html" class="admin-nav-item">
+                    <i class="fas fa-cog admin-nav-icon"></i>
+                    <span>설정</span>
+                </a>
+                <a href="/" class="admin-nav-item">
+                    <i class="fas fa-home admin-nav-icon"></i>
+                    <span>메인 사이트</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Admin Main Content -->
+        <main class="admin-main">
+            <!-- Admin Header -->
+            <header class="admin-header">
+                <h1 class="admin-page-title">대시보드</h1>
+                
+                <div class="admin-header-actions">
+                    <button class="btn btn-secondary" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i> 새로고침
+                    </button>
+                    
+                    <div class="admin-user-info">
+                        <div class="admin-user-avatar" id="admin-avatar">A</div>
+                        <span id="admin-name">관리자</span>
+                    </div>
+                    
+                    <button class="btn btn-secondary" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> 로그아웃
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Admin Content -->
+            <div class="admin-content">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-users stat-card-icon"></i>
+                        <div class="stat-card-label">전체 수강생</div>
+                        <div class="stat-card-value" id="total-students">0</div>
+                        <div class="stat-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12% 이번달</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-book-open stat-card-icon"></i>
+                        <div class="stat-card-label">활성 강좌</div>
+                        <div class="stat-card-value" id="active-courses">0</div>
+                        <div class="stat-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>3개 추가</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-clipboard-check stat-card-icon"></i>
+                        <div class="stat-card-label">이번달 수강신청</div>
+                        <div class="stat-card-value" id="monthly-enrollments">0</div>
+                        <div class="stat-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>23% 증가</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-won-sign stat-card-icon"></i>
+                        <div class="stat-card-label">이번달 매출</div>
+                        <div class="stat-card-value" id="monthly-revenue">₩0</div>
+                        <div class="stat-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>18% 증가</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3 class="chart-title">월별 수강신청 추이</h3>
+                        <canvas id="enrollment-trend-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3 class="chart-title">카테고리별 인기도</h3>
+                        <canvas id="category-popularity-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Activities -->
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">최근 수강 신청</h3>
+                        <a href="/pages/admin/enrollments.html" class="btn btn-secondary">
+                            전체 보기
+                        </a>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>수강생</th>
+                                <th>강좌명</th>
+                                <th>신청일시</th>
+                                <th>상태</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-enrollments">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3 class="section-title">빠른 작업</h3>
+                    <div class="action-buttons">
+                        <a href="/pages/admin/courses.html?action=new" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> 새 강좌 추가
+                        </a>
+                        <a href="/pages/admin/students.html?action=export" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> 수강생 목록 다운로드
+                        </a>
+                        <a href="/pages/admin/analytics.html" class="btn btn-secondary">
+                            <i class="fas fa-chart-bar"></i> 상세 분석 보기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Mobile Sidebar Toggle -->
+        <button class="mobile-sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/firebase-config.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/admin.js"></script>
+</body>
+</html>

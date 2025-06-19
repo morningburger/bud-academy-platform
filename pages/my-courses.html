@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 강의 - BUD ACADEMY</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/my-courses.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-container"></div>
+
+    <!-- Page Hero -->
+    <section class="page-hero-simple">
+        <div class="container">
+            <h1>MY COURSES</h1>
+            <p>당신의 성장 여정을 확인하세요</p>
+        </div>
+    </section>
+
+    <!-- Course Stats -->
+    <section class="course-stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-book-open"></i>
+                    <div class="stat-value" id="total-courses">0</div>
+                    <div class="stat-label">전체 강좌</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div class="stat-value" id="completed-courses">0</div>
+                    <div class="stat-label">수료 강좌</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-value" id="total-hours">0</div>
+                    <div class="stat-label">학습 시간</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-certificate"></i>
+                    <div class="stat-value" id="certificates">0</div>
+                    <div class="stat-label">수료증</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Courses Section -->
+    <section class="my-courses-section">
+        <div class="container">
+            <!-- Tabs -->
+            <div class="course-tabs">
+                <button class="tab-btn active" data-status="all">전체</button>
+                <button class="tab-btn" data-status="active">수강 중</button>
+                <button class="tab-btn" data-status="completed">수료 완료</button>
+                <button class="tab-btn" data-status="wishlist">찜한 강좌</button>
+            </div>
+
+            <!-- Courses Grid -->
+            <div id="my-courses-grid" class="my-courses-grid">
+                <!-- Courses will be loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <i class="fas fa-book"></i>
+                <h3>수강 중인 강좌가 없습니다</h3>
+                <p>새로운 강좌를 시작하고 전문가로 성장하세요!</p>
+                <a href="/pages/courses.html" class="btn btn-primary">강좌 둘러보기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/my-courses.js"></script>
+</body>
+</html>

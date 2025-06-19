@@ -1,0 +1,115 @@
+<header class="header">
+    <div class="header-container">
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <span>BUD ACADEMY</span>
+        </a>
+        
+        <nav class="nav">
+            <ul class="nav-menu">
+                <li><a href="/pages/courses.html" class="nav-link">교육과정</a></li>
+                <li><a href="/pages/about.html" class="nav-link">아카데미 소개</a></li>
+                <li><a href="/pages/instructors.html" class="nav-link">강사진</a></li>
+                <li><a href="/pages/contact.html" class="nav-link">문의하기</a></li>
+            </ul>
+        </nav>
+        
+        <div class="header-actions">
+            <a href="/pages/login.html" class="btn btn-secondary" id="login-btn">로그인</a>
+            <a href="/pages/signup.html" class="btn btn-primary" id="signup-btn">회원가입</a>
+            
+            <!-- User menu (hidden by default) -->
+            <div class="user-menu" id="user-menu" style="display: none;">
+                <div class="user-menu-toggle">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="user-email"></span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="user-dropdown">
+                    <a href="/pages/my-courses.html">내 강의</a>
+                    <a href="/pages/profile.html">프로필</a>
+                    <a href="#" onclick="logout()">로그아웃</a>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<style>
+/* User menu styles */
+.user-menu {
+    position: relative;
+}
+
+.user-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border: 2px solid var(--color-black);
+    border-radius: 30px;
+    transition: all var(--transition-normal);
+}
+
+.user-menu-toggle:hover {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+.user-email {
+    font-weight: 500;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-lg);
+    border-radius: 8px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--transition-normal);
+}
+
+.user-menu:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--color-black);
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+}
+
+.user-dropdown a:hover {
+    background-color: var(--color-gray-light);
+}
+
+.user-dropdown a:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.user-dropdown a:last-child {
+    border-radius: 0 0 8px 8px;
+    color: var(--color-error);
+}
+</style>
