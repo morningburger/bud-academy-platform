@@ -64,7 +64,7 @@ function updateAuthUI(user) {
 async function logout() {
     try {
         await auth.signOut();
-        window.location.href = '/';
+        window.location.href = window.BASE_PATH ? `${window.BASE_PATH}/` : '/';
     } catch (error) {
         console.error('Logout error:', error);
         alert('로그아웃 중 오류가 발생했습니다.');
@@ -121,7 +121,7 @@ const dbHelpers = {
     // Add enrollment
     async enrollCourse(courseId) {
         if (!currentUser) {
-            window.location.href = '/login.html';
+            window.location.href = window.BASE_PATH ? `${window.BASE_PATH}/login.html` : '/login.html';
             return false;
         }
         
