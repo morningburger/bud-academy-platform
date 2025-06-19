@@ -188,6 +188,23 @@ a {
     border: none;
     font-size: 16px;
     letter-spacing: -0.01em;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
 }
 
 .btn-primary {
@@ -432,3 +449,45 @@ a {
 
 .hidden { display: none !important; }
 .visible { display: block !important; }
+
+/* Success & Error Messages */
+.success-toast {
+    position: fixed;
+    top: 100px;
+    right: 24px;
+    background: #10b981;
+    color: var(--white);
+    padding: 16px 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    z-index: 2000;
+}
+
+.success-toast.show {
+    transform: translateX(0);
+}
+
+.error-message {
+    text-align: center;
+    padding: 40px;
+    color: var(--red);
+}
+
+.error-message i {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+/* Loading Container */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+}
