@@ -3,142 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUD ACADEMY - Just Do Beauty</title>
+    <title>BUD ACADEMY - Just Do It</title>
     
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
-    <!-- Custom CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <!-- Header Component -->
-    <div id="header-container"></div>
+    <!-- Header -->
+    <header id="main-header"></header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-video-container">
+        <div class="hero-video">
             <video autoplay muted loop playsinline>
-                <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+                <source src="https://static.nike.com/a/videos/q_90/d3b3f3b8-7d0b-4b1e-8565-8a32a7a6f0f1/video.mp4" type="video/mp4">
             </video>
-            <div class="hero-overlay"></div>
         </div>
         <div class="hero-content">
-            <h1 class="hero-title">JUST DO<br>BEAUTY</h1>
-            <p class="hero-subtitle">당신의 한계를 넘어서는 미용 교육</p>
-            <div class="hero-buttons">
-                <a href="pages/courses.html" class="btn btn-primary">교육과정 보기</a>
-                <a href="pages/signup.html" class="btn btn-secondary">지금 시작하기</a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </section>
-
-    <!-- Featured Categories -->
-    <section class="featured-categories">
-        <div class="container">
-            <h2 class="section-title">MASTER YOUR CRAFT</h2>
-            <div class="category-grid">
-                <div class="category-card" data-category="cut">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800" alt="헤어컷">
-                        <div class="category-overlay">
-                            <h3>CUT</h3>
-                            <p>정밀한 커팅 기술</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="category-card" data-category="color">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800" alt="컬러">
-                        <div class="category-overlay">
-                            <h3>COLOR</h3>
-                            <p>아트를 그리는 컬러링</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="category-card" data-category="perm">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800" alt="펌">
-                        <div class="category-overlay">
-                            <h3>PERM</h3>
-                            <p>완벽한 텍스처 디자인</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="category-card" data-category="marketing">
-                    <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800" alt="마케팅">
-                        <div class="category-overlay">
-                            <h3>MARKETING</h3>
-                            <p>성공하는 살롱 전략</p>
-                        </div>
-                    </div>
-                </div>
+            <h1 class="hero-title">
+                <span class="line1">JUST</span>
+                <span class="line2">LEARN IT</span>
+            </h1>
+            <p class="hero-subtitle">전문 미용교육의 새로운 기준</p>
+            <div class="hero-actions">
+                <a href="courses.html" class="btn btn-primary">교육과정 보기</a>
+                <a href="login.html" class="btn btn-secondary">시작하기</a>
             </div>
         </div>
     </section>
 
-    <!-- Popular Courses -->
-    <section class="popular-courses">
+    <!-- Featured Courses -->
+    <section class="featured-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">HOT COURSES</h2>
-                <a href="pages/courses.html" class="view-all">전체보기 <i class="fas fa-arrow-right"></i></a>
+                <h2 class="section-title">인기 교육과정</h2>
+                <a href="courses.html" class="section-link">모든 과정 보기 <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div id="popular-courses-grid" class="courses-grid">
-                <!-- Courses will be loaded here -->
+            <div class="featured-grid" id="featured-courses">
+                <!-- Dynamic content from Firebase -->
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- Categories -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title text-center">카테고리</h2>
+            <div class="categories-grid">
+                <a href="courses.html?category=cut" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3>컷</h3>
+                </a>
+                <a href="courses.html?category=color" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>컬러</h3>
+                </a>
+                <a href="courses.html?category=perm" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>펌</h3>
+                </a>
+                <a href="courses.html?category=dye" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3>염색</h3>
+                </a>
+                <a href="courses.html?category=marketing" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>마케팅</h3>
+                </a>
+                <a href="courses.html?category=management" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3>관리자교육</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
     <section class="stats-section">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-item">
-                    <h3 class="stat-number" data-count="1500">0</h3>
-                    <p class="stat-label">수료생</p>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="1500">0</div>
+                    <div class="stat-label">수강생</div>
                 </div>
-                <div class="stat-item">
-                    <h3 class="stat-number" data-count="98">0</h3>
-                    <p class="stat-label">만족도 %</p>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-label">교육과정</div>
                 </div>
-                <div class="stat-item">
-                    <h3 class="stat-number" data-count="50">0</h3>
-                    <p class="stat-label">전문 강사진</p>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="98">0</div>
+                    <div class="stat-label">만족도</div>
                 </div>
-                <div class="stat-item">
-                    <h3 class="stat-number" data-count="12">0</h3>
-                    <p class="stat-label">년 경력</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="container">
-            <h2 class="section-title">VOICES OF SUCCESS</h2>
-            <div class="testimonial-slider">
-                <div class="testimonial-item active">
-                    <p class="testimonial-text">"버드아카데미에서 배운 기술로 제 살롱을 오픈했습니다. 최고의 선택이었어요!"</p>
-                    <div class="testimonial-author">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="김민지">
-                        <div>
-                            <h4>김민지</h4>
-                            <p>2023년 수료생</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-label">연차</div>
                 </div>
             </div>
         </div>
@@ -147,18 +126,20 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2>당신의 꿈을 현실로</h2>
-            <p>지금 시작하세요. 미래는 기다리지 않습니다.</p>
-            <a href="pages/signup.html" class="btn btn-cta">무료 상담 신청</a>
+            <div class="cta-content">
+                <h2>미용 전문가로의 여정을 시작하세요</h2>
+                <p>버드아카데미와 함께 당신의 꿈을 현실로 만드세요</p>
+                <a href="login.html" class="btn btn-primary btn-large">지금 시작하기</a>
+            </div>
         </div>
     </section>
 
-    <!-- Footer Component -->
-    <div id="footer-container"></div>
+    <!-- Footer -->
+    <footer id="main-footer"></footer>
 
     <!-- Scripts -->
     <script src="js/firebase-config.js"></script>
     <script src="js/common.js"></script>
-    <script src="js/home.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

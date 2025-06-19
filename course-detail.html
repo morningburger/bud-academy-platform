@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교육과정 상세 - BUD ACADEMY</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/course-detail.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header"></header>
+
+    <!-- Course Hero -->
+    <section class="course-hero" id="course-hero">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="course-badges"></div>
+                <h1 class="course-title"></h1>
+                <p class="course-subtitle"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Content -->
+    <section class="course-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Main Content -->
+                <div class="content-main">
+                    <!-- Overview -->
+                    <div class="content-section">
+                        <h2 class="section-title">교육 개요</h2>
+                        <div class="course-description" id="course-description"></div>
+                    </div>
+                    
+                    <!-- Curriculum -->
+                    <div class="content-section">
+                        <h2 class="section-title">커리큘럼</h2>
+                        <div class="curriculum-list" id="curriculum-list"></div>
+                    </div>
+                    
+                    <!-- Instructor -->
+                    <div class="content-section">
+                        <h2 class="section-title">강사 소개</h2>
+                        <div class="instructor-info" id="instructor-info"></div>
+                    </div>
+                    
+                    <!-- Gallery -->
+                    <div class="content-section">
+                        <h2 class="section-title">교육 현장</h2>
+                        <div class="course-gallery" id="course-gallery"></div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="content-sidebar">
+                    <div class="course-card sticky">
+                        <div class="card-image" id="course-image"></div>
+                        
+                        <div class="card-content">
+                            <div class="price-section">
+                                <div class="price-label">수강료</div>
+                                <div class="price-amount" id="course-price"></div>
+                            </div>
+                            
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <div>
+                                        <div class="info-label">교육 기간</div>
+                                        <div class="info-value" id="course-dates"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <div class="info-label">교육 시간</div>
+                                        <div class="info-value" id="course-time"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <i class="fas fa-users"></i>
+                                    <div>
+                                        <div class="info-label">모집 인원</div>
+                                        <div class="info-value" id="course-capacity"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="info-item">
+                                    <i class="fas fa-layer-group"></i>
+                                    <div>
+                                        <div class="info-label">총 회차</div>
+                                        <div class="info-value" id="course-sessions"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="enrollment-status">
+                                <div class="status-bar">
+                                    <div class="status-fill" id="enrollment-bar"></div>
+                                </div>
+                                <div class="status-text" id="enrollment-text"></div>
+                            </div>
+                            
+                            <button class="btn btn-primary btn-block btn-large" id="enroll-btn" onclick="enrollCourse()">
+                                수강신청
+                            </button>
+                            
+                            <div class="card-actions">
+                                <button class="action-btn" onclick="shareCourse()">
+                                    <i class="fas fa-share"></i>
+                                    <span>공유하기</span>
+                                </button>
+                                <button class="action-btn" onclick="toggleWishlist()">
+                                    <i class="far fa-heart" id="wishlist-icon"></i>
+                                    <span>찜하기</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Courses -->
+    <section class="related-section">
+        <div class="container">
+            <h2 class="section-title">추천 교육과정</h2>
+            <div class="related-grid" id="related-courses"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="main-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/course-detail.js"></script>
+</body>
+</html>

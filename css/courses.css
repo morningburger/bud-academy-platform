@@ -1,0 +1,365 @@
+/* Page Hero */
+.page-hero {
+    background: var(--black);
+    color: var(--white);
+    padding: 120px 0 60px;
+    margin-top: 80px;
+}
+
+.page-title {
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+}
+
+.page-subtitle {
+    font-size: 20px;
+    opacity: 0.8;
+}
+
+/* Filters Section */
+.filters-section {
+    background: var(--gray-100);
+    padding: 40px 0;
+    position: sticky;
+    top: 80px;
+    z-index: 100;
+    border-bottom: 2px solid var(--black);
+}
+
+.filters-wrapper {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    position: relative;
+}
+
+.filter-toggle {
+    background: var(--white);
+    border: 2px solid var(--black);
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.filter-toggle:hover {
+    background: var(--black);
+    color: var(--white);
+}
+
+.filter-toggle i {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.filter-toggle.active i {
+    transform: rotate(180deg);
+}
+
+.filter-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    border: 2px solid var(--black);
+    border-top: none;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.filter-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.filter-option {
+    display: block;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.filter-option:last-child {
+    border-bottom: none;
+}
+
+.filter-option:hover {
+    background: var(--gray-100);
+}
+
+.filter-option input {
+    display: none;
+}
+
+.filter-option input:checked + span {
+    font-weight: 700;
+    color: var(--red);
+}
+
+.filter-clear {
+    background: transparent;
+    border: none;
+    color: var(--gray-600);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px;
+    margin-left: auto;
+    transition: var(--transition);
+}
+
+.filter-clear:hover {
+    color: var(--black);
+}
+
+/* Courses Section */
+.courses-section {
+    padding: 60px 0 120px;
+}
+
+.results-info {
+    margin-bottom: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-600);
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.course-item {
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.course-item:hover {
+    transform: translateY(-10px);
+}
+
+.course-image {
+    position: relative;
+    height: 450px;
+    overflow: hidden;
+    background: var(--gray-100);
+}
+
+.course-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.course-item:hover .course-image img {
+    transform: scale(1.1);
+}
+
+.course-badges {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.badge {
+    background: var(--white);
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-type {
+    background: var(--black);
+    color: var(--white);
+}
+
+.course-info {
+    padding: 24px 0;
+}
+
+.course-category {
+    font-size: 14px;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.course-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+.course-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.course-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--red);
+}
+
+.course-duration {
+    font-size: 14px;
+    color: var(--gray-600);
+}
+
+.course-progress {
+    background: var(--gray-200);
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--black);
+    transition: width 0.6s ease;
+}
+
+.course-enrollment {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 8px;
+    text-align: right;
+}
+
+/* Load More */
+.load-more-wrapper {
+    text-align: center;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 100px 0 40px;
+    }
+    
+    .filters-section {
+        padding: 20px 0;
+        top: 70px;
+    }
+    
+    .filters-wrapper {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .filter-toggle {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .filter-dropdown {
+        width: 100%;
+    }
+    
+    .filter-clear {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 8px;
+    }
+    
+    .courses-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    .course-image {
+        height: 350px;
+    }
+}
+
+/* Loading State */
+.course-skeleton {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-image {
+    height: 450px;
+    background: var(--gray-200);
+    margin-bottom: 20px;
+}
+
+.skeleton-text {
+    height: 20px;
+    background: var(--gray-200);
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.empty-state i {
+    font-size: 80px;
+    color: var(--gray-300);
+    margin-bottom: 24px;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    color: var(--gray-600);
+    margin-bottom: 32px;
+}

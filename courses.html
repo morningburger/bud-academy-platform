@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교육과정 - BUD ACADEMY</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/courses.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header"></header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1 class="page-title">ALL COURSES</h1>
+            <p class="page-subtitle">당신의 실력을 한 단계 업그레이드</p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-wrapper">
+                <div class="filter-group">
+                    <button class="filter-toggle" onclick="toggleFilterDropdown('category')">
+                        카테고리 <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="filter-dropdown" id="category-dropdown">
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="all" checked onchange="applyFilters()">
+                            <span>전체</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="cut" onchange="applyFilters()">
+                            <span>컷</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="color" onchange="applyFilters()">
+                            <span>컬러</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="perm" onchange="applyFilters()">
+                            <span>펌</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="dye" onchange="applyFilters()">
+                            <span>염색</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="marketing" onchange="applyFilters()">
+                            <span>마케팅</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category" value="management" onchange="applyFilters()">
+                            <span>관리자교육</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <button class="filter-toggle" onclick="toggleFilterDropdown('type')">
+                        교육 타입 <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="filter-dropdown" id="type-dropdown">
+                        <label class="filter-option">
+                            <input type="radio" name="type" value="all" checked onchange="applyFilters()">
+                            <span>전체</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="type" value="Look & Learn" onchange="applyFilters()">
+                            <span>Look & Learn</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="type" value="Hands-On" onchange="applyFilters()">
+                            <span>Hands-On</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <button class="filter-toggle" onclick="toggleFilterDropdown('sort')">
+                        정렬 <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="filter-dropdown" id="sort-dropdown">
+                        <label class="filter-option">
+                            <input type="radio" name="sort" value="newest" checked onchange="applyFilters()">
+                            <span>최신순</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="sort" value="popular" onchange="applyFilters()">
+                            <span>인기순</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="sort" value="price-low" onchange="applyFilters()">
+                            <span>가격 낮은순</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="sort" value="price-high" onchange="applyFilters()">
+                            <span>가격 높은순</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="filter-clear" onclick="clearFilters()">
+                    필터 초기화
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Grid -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="results-info">
+                <span id="results-count">0개의 교육과정</span>
+            </div>
+            
+            <div class="courses-grid" id="courses-grid">
+                <!-- Dynamic content from Firebase -->
+            </div>
+            
+            <div class="load-more-wrapper" id="load-more-wrapper">
+                <button class="btn btn-secondary" onclick="loadMoreCourses()">더 보기</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="main-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/courses.js"></script>
+</body>
+</html>

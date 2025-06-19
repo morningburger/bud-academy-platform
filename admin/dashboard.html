@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - BUD ACADEMY</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <div class="admin-logo">
+                <a href="/">BUD<span>ACADEMY</span></a>
+                <span class="admin-badge">ADMIN</span>
+            </div>
+            
+            <div class="admin-user">
+                <span id="admin-username">관리자</span>
+                <button class="btn btn-small" onclick="adminLogout()">로그아웃</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <nav class="admin-nav">
+                <a href="#" class="nav-item active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>대시보드</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="courses">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>교육과정 관리</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="students">
+                    <i class="fas fa-users"></i>
+                    <span>수강생 관리</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="enrollments">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>수강신청 관리</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="analytics">
+                    <i class="fas fa-chart-line"></i>
+                    <span>통계 분석</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>설정</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Tab -->
+            <div class="admin-tab active" id="dashboard-tab">
+                <div class="tab-header">
+                    <h1>대시보드</h1>
+                    <p>버드아카데미 운영 현황을 한눈에 확인하세요</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>총 회원수</h3>
+                            <p class="stat-value" id="total-users">0</p>
+                            <span class="stat-change positive">+12% 이번 달</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon bg-green">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>활성 과정</h3>
+                            <p class="stat-value" id="active-courses">0</p>
+                            <span class="stat-change">총 24개 과정</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon bg-yellow">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>수강 중</h3>
+                            <p class="stat-value" id="active-enrollments">0</p>
+                            <span class="stat-change positive">+8% 이번 주</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon bg-red">
+                            <i class="fas fa-won-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>이번 달 매출</h3>
+                            <p class="stat-value" id="monthly-revenue">₩0</p>
+                            <span class="stat-change positive">+15% 전월 대비</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>월별 수강신청 추이</h3>
+                        <canvas id="enrollment-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>카테고리별 인기도</h3>
+                        <canvas id="category-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="recent-section">
+                    <h3>최근 활동</h3>
+                    <div class="activity-list" id="recent-activities">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Management Tab -->
+            <div class="admin-tab" id="courses-tab">
+                <div class="tab-header">
+                    <h1>교육과정 관리</h1>
+                    <button class="btn btn-primary" onclick="showCourseModal()">
+                        <i class="fas fa-plus"></i> 새 과정 추가
+                    </button>
+                </div>
+
+                <!-- Course Filters -->
+                <div class="admin-filters">
+                    <input type="text" class="filter-input" placeholder="검색..." id="course-search">
+                    <select class="filter-select" id="course-category-filter">
+                        <option value="">모든 카테고리</option>
+                        <option value="cut">컷</option>
+                        <option value="color">컬러</option>
+                        <option value="perm">펌</option>
+                        <option value="dye">염색</option>
+                        <option value="marketing">마케팅</option>
+                        <option value="management">관리자교육</option>
+                    </select>
+                    <select class="filter-select" id="course-status-filter">
+                        <option value="">모든 상태</option>
+                        <option value="active">활성</option>
+                        <option value="inactive">비활성</option>
+                        <option value="completed">종료</option>
+                    </select>
+                </div>
+
+                <!-- Courses Table -->
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>과정명</th>
+                                <th>카테고리</th>
+                                <th>가격</th>
+                                <th>기간</th>
+                                <th>수강인원</th>
+                                <th>상태</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courses-table-body">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Students Management Tab -->
+            <div class="admin-tab" id="students-tab">
+                <div class="tab-header">
+                    <h1>수강생 관리</h1>
+                </div>
+
+                <!-- Student Filters -->
+                <div class="admin-filters">
+                    <input type="text" class="filter-input" placeholder="이름 또는 이메일 검색..." id="student-search">
+                    <select class="filter-select" id="student-status-filter">
+                        <option value="">모든 상태</option>
+                        <option value="active">활성</option>
+                        <option value="inactive">비활성</option>
+                    </select>
+                </div>
+
+                <!-- Students Table -->
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>가입일</th>
+                                <th>수강 과정</th>
+                                <th>상태</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Enrollments Tab -->
+            <div class="admin-tab" id="enrollments-tab">
+                <div class="tab-header">
+                    <h1>수강신청 관리</h1>
+                </div>
+
+                <!-- Enrollment Filters -->
+                <div class="admin-filters">
+                    <input type="date" class="filter-input" id="enrollment-date-from">
+                    <span>~</span>
+                    <input type="date" class="filter-input" id="enrollment-date-to">
+                    <select class="filter-select" id="enrollment-status-filter">
+                        <option value="">모든 상태</option>
+                        <option value="pending">대기</option>
+                        <option value="confirmed">확정</option>
+                        <option value="cancelled">취소</option>
+                    </select>
+                </div>
+
+                <!-- Enrollments Table -->
+                <div class="admin-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>신청번호</th>
+                                <th>수강생</th>
+                                <th>과정명</th>
+                                <th>신청일</th>
+                                <th>결제금액</th>
+                                <th>상태</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enrollments-table-body">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div class="admin-tab" id="analytics-tab">
+                <div class="tab-header">
+                    <h1>통계 분석</h1>
+                    <div class="date-range-picker">
+                        <button class="date-btn active">이번 달</button>
+                        <button class="date-btn">지난 달</button>
+                        <button class="date-btn">올해</button>
+                    </div>
+                </div>
+
+                <!-- Analytics Content -->
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>매출 분석</h3>
+                        <canvas id="revenue-chart"></canvas>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h3>수강생 성장률</h3>
+                        <canvas id="growth-chart"></canvas>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h3>인기 과정 TOP 5</h3>
+                        <div class="top-courses-list" id="top-courses">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h3>수강 완료율</h3>
+                        <canvas id="completion-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="admin-tab" id="settings-tab">
+                <div class="tab-header">
+                    <h1>설정</h1>
+                </div>
+
+                <!-- Settings Content -->
+                <div class="settings-section">
+                    <h3>사이트 설정</h3>
+                    <form class="settings-form">
+                        <div class="form-group">
+                            <label>사이트 이름</label>
+                            <input type="text" class="form-input" value="BUD ACADEMY">
+                        </div>
+                        <div class="form-group">
+                            <label>연락처</label>
+                            <input type="tel" class="form-input" value="02-1234-5678">
+                        </div>
+                        <div class="form-group">
+                            <label>이메일</label>
+                            <input type="email" class="form-input" value="admin@budacademy.com">
+                        </div>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Course Modal -->
+    <div class="admin-modal" id="course-modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="course-modal-title">새 교육과정 추가</h2>
+                <button class="modal-close" onclick="closeCourseModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="course-form" onsubmit="saveCourse(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>과정명 *</label>
+                        <input type="text" name="name" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>카테고리 *</label>
+                        <select name="category" class="form-input" required>
+                            <option value="">선택하세요</option>
+                            <option value="cut">컷</option>
+                            <option value="color">컬러</option>
+                            <option value="perm">펌</option>
+                            <option value="dye">염색</option>
+                            <option value="marketing">마케팅</option>
+                            <option value="management">관리자교육</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>교육 타입 *</label>
+                        <select name="type" class="form-input" required>
+                            <option value="">선택하세요</option>
+                            <option value="Look & Learn">Look & Learn</option>
+                            <option value="Hands-On">Hands-On</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>가격 *</label>
+                        <input type="number" name="price" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>시작일 *</label>
+                        <input type="date" name="startDate" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>종료일 *</label>
+                        <input type="date" name="endDate" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>시작 시간 *</label>
+                        <input type="time" name="startTime" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>종료 시간 *</label>
+                        <input type="time" name="endTime" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>총 회차 *</label>
+                        <input type="number" name="sessions" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>최대 인원 *</label>
+                        <input type="number" name="maxEnrollments" class="form-input" value="20" required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>설명 *</label>
+                        <textarea name="description" class="form-input" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>이미지</label>
+                        <input type="file" name="image" class="form-input" accept="image/*" onchange="previewImage(event)">
+                        <div id="image-preview" class="image-preview"></div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeCourseModal()">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
