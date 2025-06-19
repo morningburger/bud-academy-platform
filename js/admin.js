@@ -9,7 +9,7 @@ let charts = {};
 document.addEventListener('DOMContentLoaded', async function() {
     // Check admin authentication
     if (!currentUser) {
-        window.location.href = '/login.html';
+        window.location.href = `${BASE_PATH}/login.html`;
         return;
     }
     
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const userDoc = await db.collection('users').doc(currentUser.uid).get();
     if (!userDoc.exists || userDoc.data().role !== 'admin') {
         alert('관리자 권한이 필요합니다.');
-        window.location.href = '/';
+        window.location.href = `${BASE_PATH}/`;
         return;
     }
     
@@ -633,7 +633,7 @@ async function adminLogout() {
     if (confirm('로그아웃 하시겠습니까?')) {
         try {
             await auth.signOut();
-            window.location.href = '/';
+            window.location.href = `${BASE_PATH}/`;
         } catch (error) {
             console.error('Logout error:', error);
         }
