@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if user is already logged in
     if (currentUser) {
-        window.location.href = '/';
+        window.location.href = `${BASE_PATH}/`;
     }
 });
 
@@ -87,7 +87,7 @@ async function handleLogin(event) {
         
         // Redirect after a short delay
         setTimeout(() => {
-            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/';
+            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || `${BASE_PATH}/`;
             window.location.href = redirectUrl;
         }, 1000);
         
@@ -155,7 +155,7 @@ async function handleSignup(event) {
         
         // Redirect after a short delay
         setTimeout(() => {
-            window.location.href = '/';
+            window.location.href = `${BASE_PATH}/`;
         }, 2000);
         
     } catch (error) {
@@ -250,7 +250,7 @@ async function loginWithGoogle() {
         
         // Redirect
         setTimeout(() => {
-            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/';
+            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || `${BASE_PATH}/`;
             window.location.href = redirectUrl;
         }, 1000);
         
@@ -286,7 +286,7 @@ async function handleAdminLogin(event) {
             utils.showSuccess('관리자 로그인 성공!');
             
             setTimeout(() => {
-                window.location.href = '/admin/dashboard.html';
+                window.location.href = `${BASE_PATH}/admin/dashboard.html`;
             }, 1000);
             
         } catch (error) {
