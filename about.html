@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소개 - BUD ACADEMY</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header"></header>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="line1">WE ARE</span>
+                <span class="line2">BUD ACADEMY</span>
+            </h1>
+            <p class="hero-subtitle">미용 교육의 새로운 기준을 만들어갑니다</p>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600" alt="BUD Academy">
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="mission-content">
+                <h2 class="section-title">OUR MISSION</h2>
+                <p class="mission-text">
+                    버드아카데미는 단순한 기술 전달을 넘어<br>
+                    창의성과 전문성을 갖춘 미용 전문가를 양성합니다
+                </p>
+                <div class="mission-stats">
+                    <div class="stat">
+                        <h3>15+</h3>
+                        <p>Years of Excellence</p>
+                    </div>
+                    <div class="stat">
+                        <h3>5000+</h3>
+                        <p>Graduates</p>
+                    </div>
+                    <div class="stat">
+                        <h3>98%</h3>
+                        <p>Satisfaction Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <h2 class="section-title text-center">CORE VALUES</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>INNOVATION</h3>
+                    <p>최신 트렌드와 기술을 선도하며 끊임없이 혁신합니다</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>PASSION</h3>
+                    <p>미용에 대한 열정으로 최고의 교육을 제공합니다</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>EXCELLENCE</h3>
+                    <p>탁월함을 추구하며 업계 최고 수준을 지향합니다</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>COMMUNITY</h3>
+                    <p>함께 성장하는 커뮤니티를 만들어갑니다</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-content">
+                    <h2 class="section-title">OUR STORY</h2>
+                    <p class="story-year">Since 2009</p>
+                    <p class="story-text">
+                        버드아카데미는 2009년 작은 스튜디오에서 시작했습니다. 
+                        '모든 사람이 자신만의 아름다움을 찾을 수 있도록' 이라는 
+                        신념으로 시작한 우리의 여정은 이제 대한민국을 대표하는 
+                        미용 교육 기관으로 성장했습니다.
+                    </p>
+                    <p class="story-text">
+                        15년간 축적된 노하우와 체계적인 커리큘럼, 
+                        그리고 열정적인 교육진과 함께 우리는 계속해서 
+                        미용 교육의 새로운 기준을 만들어가고 있습니다.
+                    </p>
+                    <a href="#timeline" class="btn btn-primary">우리의 여정 보기</a>
+                </div>
+                <div class="story-images">
+                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800" alt="BUD Academy History" class="story-img-1">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=800" alt="BUD Academy Present" class="story-img-2">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section" id="timeline">
+        <div class="container">
+            <h2 class="section-title text-center">MILESTONES</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2009</div>
+                    <div class="timeline-content">
+                        <h3>The Beginning</h3>
+                        <p>서울 강남에 첫 아카데미 오픈</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2012</div>
+                    <div class="timeline-content">
+                        <h3>Expansion</h3>
+                        <p>부산, 대구 지점 확장</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2015</div>
+                    <div class="timeline-content">
+                        <h3>Innovation</h3>
+                        <p>국내 최초 디지털 헤어 디자인 과정 도입</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2018</div>
+                    <div class="timeline-content">
+                        <h3>Global Partnership</h3>
+                        <p>해외 유명 아카데미와 파트너십 체결</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2021</div>
+                    <div class="timeline-content">
+                        <h3>Digital Transformation</h3>
+                        <p>온라인 교육 플랫폼 런칭</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">
+                        <h3>New Chapter</h3>
+                        <p>AI 기반 맞춤형 교육 시스템 도입</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="section-title text-center">LEADERSHIP TEAM</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" alt="CEO">
+                    </div>
+                    <h3>김민수</h3>
+                    <p class="member-title">CEO & Founder</p>
+                    <p class="member-bio">20년 경력의 헤어 아티스트</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400" alt="Director">
+                    </div>
+                    <h3>이서연</h3>
+                    <p class="member-title">Education Director</p>
+                    <p class="member-bio">국제 미용 대회 심사위원</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400" alt="Creative Director">
+                    </div>
+                    <h3>박준호</h3>
+                    <p class="member-title">Creative Director</p>
+                    <p class="member-bio">트렌드 세터 & 컬러리스트</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="partners-section">
+        <div class="container">
+            <h2 class="section-title text-center">TRUSTED BY</h2>
+            <div class="partners-grid">
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/200x100/000/fff?text=Partner+1" alt="Partner 1">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/200x100/000/fff?text=Partner+2" alt="Partner 2">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/200x100/000/fff?text=Partner+3" alt="Partner 3">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://via.placeholder.com/200x100/000/fff?text=Partner+4" alt="Partner 4">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="about-cta">
+        <div class="container">
+            <h2>함께 성장할 준비가 되셨나요?</h2>
+            <p>버드아카데미와 함께 당신의 꿈을 현실로 만드세요</p>
+            <div class="cta-buttons">
+                <a href="courses.html" class="btn btn-primary btn-large">교육과정 보기</a>
+                <a href="contact.html" class="btn btn-secondary btn-large">문의하기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="main-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/about.js"></script>
+</body>
+</html>
