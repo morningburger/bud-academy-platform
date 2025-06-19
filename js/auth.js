@@ -279,19 +279,15 @@ async function handleAdminLogin(event) {
     
     // Check admin credentials (in production, this should be done server-side)
     if (adminId === 'igcorp' && adminPassword === 'Igcorp192837!') {
-        try {
-            // Login with admin account
-            await auth.signInWithEmailAndPassword('admin@budacademy.com', adminPassword);
-            
-            utils.showSuccess('관리자 로그인 성공!');
-            
-            setTimeout(() => {
-                window.location.href = `${BASE_PATH}/admin/dashboard.html`;
-            }, 1000);
-            
-        } catch (error) {
-            alert('관리자 인증 실패');
-        }
+        // 임시로 관리자 정보를 세션에 저장
+        sessionStorage.setItem('isAdmin', 'true');
+        sessionStorage.setItem('adminUser', adminId);
+        
+        utils.showSuccess('관리자 로그인 성공!');
+        
+        setTimeout(() => {
+            window.location.href = `${BASE_PATH}/admin/dashboard.html`;
+        }, 1000);
     } else {
         alert('관리자 ID 또는 비밀번호가 올바르지 않습니다.');
     }
