@@ -1,3 +1,6 @@
+// Base path configuration for GitHub Pages
+const BASE_PATH = '/bud-academy-platform';
+
 // Load header and footer
 document.addEventListener('DOMContentLoaded', function() {
     loadHeader();
@@ -11,22 +14,22 @@ function getHeaderHTML() {
         <header class="header" id="header">
             <div class="container">
                 <div class="header-inner">
-                    <a href="/" class="logo">
+                    <a href="${BASE_PATH}/" class="logo">
                         BUD<span>ACADEMY</span>
                     </a>
                     
                     <nav class="nav-main" id="navMain">
                         <ul class="nav-links">
-                            <li><a href="/" class="nav-link">홈</a></li>
-                            <li><a href="/courses.html" class="nav-link">교육과정</a></li>
-                            <li><a href="/about.html" class="nav-link">소개</a></li>
-                            <li class="auth-required hidden"><a href="/my-courses.html" class="nav-link">내 강의</a></li>
+                            <li><a href="${BASE_PATH}/" class="nav-link">홈</a></li>
+                            <li><a href="${BASE_PATH}/courses.html" class="nav-link">교육과정</a></li>
+                            <li><a href="${BASE_PATH}/about.html" class="nav-link">소개</a></li>
+                            <li class="auth-required hidden"><a href="${BASE_PATH}/my-courses.html" class="nav-link">내 강의</a></li>
                         </ul>
                         
                         <div class="nav-actions">
                             <div class="user-info"></div>
-                            <a href="/login.html" class="btn btn-secondary guest-only">로그인</a>
-                            <a href="/admin/dashboard.html" class="btn btn-primary auth-required hidden admin-only">관리자</a>
+                            <a href="${BASE_PATH}/login.html" class="btn btn-secondary guest-only">로그인</a>
+                            <a href="${BASE_PATH}/admin/dashboard.html" class="btn btn-primary auth-required hidden admin-only">관리자</a>
                         </div>
                     </nav>
                     
@@ -58,29 +61,29 @@ function getFooterHTML() {
                     <div class="footer-column">
                         <h4>교육과정</h4>
                         <ul class="footer-links">
-                            <li><a href="/courses.html?category=cut">헤어컷</a></li>
-                            <li><a href="/courses.html?category=color">컬러링</a></li>
-                            <li><a href="/courses.html?category=perm">펌</a></li>
-                            <li><a href="/courses.html?category=marketing">마케팅</a></li>
+                            <li><a href="${BASE_PATH}/courses.html?category=cut">헤어컷</a></li>
+                            <li><a href="${BASE_PATH}/courses.html?category=color">컬러링</a></li>
+                            <li><a href="${BASE_PATH}/courses.html?category=perm">펌</a></li>
+                            <li><a href="${BASE_PATH}/courses.html?category=marketing">마케팅</a></li>
                         </ul>
                     </div>
                     
                     <div class="footer-column">
                         <h4>아카데미</h4>
                         <ul class="footer-links">
-                            <li><a href="/about.html">소개</a></li>
-                            <li><a href="/instructors.html">강사진</a></li>
-                            <li><a href="/location.html">오시는 길</a></li>
-                            <li><a href="/contact.html">문의하기</a></li>
+                            <li><a href="${BASE_PATH}/about.html">소개</a></li>
+                            <li><a href="${BASE_PATH}/instructors.html">강사진</a></li>
+                            <li><a href="${BASE_PATH}/location.html">오시는 길</a></li>
+                            <li><a href="${BASE_PATH}/contact.html">문의하기</a></li>
                         </ul>
                     </div>
                     
                     <div class="footer-column">
                         <h4>지원</h4>
                         <ul class="footer-links">
-                            <li><a href="/faq.html">자주 묻는 질문</a></li>
-                            <li><a href="/terms.html">이용약관</a></li>
-                            <li><a href="/privacy.html">개인정보처리방침</a></li>
+                            <li><a href="${BASE_PATH}/faq.html">자주 묻는 질문</a></li>
+                            <li><a href="${BASE_PATH}/terms.html">이용약관</a></li>
+                            <li><a href="${BASE_PATH}/privacy.html">개인정보처리방침</a></li>
                         </ul>
                     </div>
                 </div>
@@ -251,3 +254,4 @@ const utils = {
 
 // Export for use in other files
 window.utils = utils;
+window.BASE_PATH = BASE_PATH;
