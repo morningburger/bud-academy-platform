@@ -1,11 +1,12 @@
 // Firebase Configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyD5FWKbT5_D-XcP2lgmDQeQfzbskEcUrC8",
+  authDomain: "bud-academy.firebaseapp.com",
+  projectId: "bud-academy",
+  storageBucket: "bud-academy.firebasestorage.app",
+  messagingSenderId: "841659917747",
+  appId: "1:841659917747:web:345ca8d4bec9c192c017c6",
+  measurementId: "G-XBDN5JT4N5"
 };
 
 // Initialize Firebase
