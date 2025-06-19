@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const courseId = getCourseIdFromURL();
     
     if (!courseId) {
-        window.location.href = '/courses.html';
+        window.location.href = `${BASE_PATH}/courses.html`;
         return;
     }
     
@@ -39,7 +39,7 @@ async function loadCourseDetail(courseId) {
     } catch (error) {
         console.error('Error loading course:', error);
         alert('교육과정을 불러올 수 없습니다.');
-        window.location.href = '/courses.html';
+        window.location.href = `${BASE_PATH}/courses.html`;
     }
 }
 
@@ -205,7 +205,7 @@ function updateWishlistIcon() {
 async function enrollCourse() {
     if (!currentUser) {
         if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-            window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.href)}`;
+            window.location.href = `${BASE_PATH}/login.html?redirect=${encodeURIComponent(window.location.href)}`;
         }
         return;
     }
