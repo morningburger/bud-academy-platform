@@ -8,16 +8,12 @@ let charts = {};
 // Initialize admin dashboard
 document.addEventListener('DOMContentLoaded', async function() {
     // Check admin authentication
-    if (!currentUser) {
-        window.location.href = `${BASE_PATH}/login.html`;
-        return;
-    }
+    const isAdmin = sessionStorage.getItem('isAdmin');
+    const adminUser = sessionStorage.getItem('adminUser');
     
-    // Check admin role
-    const userDoc = await db.collection('users').doc(currentUser.uid).get();
-    if (!userDoc.exists || userDoc.data().role !== 'admin') {
+    if (!isAdmin || isAdmin !== 'true') {
         alert('관리자 권한이 필요합니다.');
-        window.location.href = `${BASE_PATH}/`;
+        window.location.href = `${BASE_PATH}/login.html`;
         return;
     }
     
