@@ -21,15 +21,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('admin-username').textContent = adminUser || '관리자';
     
     // Initialize dashboard
-    initializeSidebar();
-    loadDashboard();
-});
-    
-    // Set admin username
-    document.getElementById('admin-username').textContent = currentUser.displayName || '관리자';
-    
-    // Initialize dashboard
-    initializeSidebar();
     loadDashboard();
 });
 
