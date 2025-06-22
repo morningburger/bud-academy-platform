@@ -100,6 +100,7 @@ default:
         const dateB = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
         return dateB - dateA;
     });
+    break; // ✅ break 문 추가
     
     // Reset displayed courses
     displayedCourses = 0;
