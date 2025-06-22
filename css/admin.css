@@ -222,6 +222,7 @@
     background: var(--white);
     padding: 24px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    height: 400px;
 }
 
 .chart-card h3 {
@@ -494,10 +495,12 @@
     gap: 24px;
 }
 
+/* 기존 .analytics-card 수정 */
 .analytics-card {
     background: var(--white);
     padding: 24px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    height: 350px;
 }
 
 .analytics-card h3 {
