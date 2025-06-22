@@ -169,7 +169,7 @@ function createCourseHTML(course) {
         Math.round((course.enrollments || 0) / course.maxEnrollments * 100) : 0;
     
     return `
-        <div class="course-item fade-in" onclick="window.location.href='${BASE_PATH}/course-detail.html?id=${course.id}'"
+        <div class="course-item fade-in" onclick="window.location.href='${BASE_PATH}/course-detail.html?id=${course.id}'">
             <div class="course-image">
                 <img src="${course.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'}" 
                      alt="${course.name}"
