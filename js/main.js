@@ -21,7 +21,7 @@ async function loadFeaturedCourses() {
         }
         
         container.innerHTML = courses.slice(0, 3).map(course => `
-            <div class="course-card fade-in" onclick="window.location.href='${BASE_PATH}/course-detail.html?id=${course.id}'"
+            <div class="course-card fade-in" onclick="window.location.href='${BASE_PATH}/course-detail.html?id=${course.id}'">
                 <div class="course-card-image">
                     <img src="${course.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'}" 
                          alt="${course.name}"
