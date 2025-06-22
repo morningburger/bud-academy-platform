@@ -92,14 +92,14 @@ function applyFilters() {
         case 'price-high':
             filteredCourses.sort((a, b) => b.price - a.price);
             break;
-        case 'newest':
-        default:
-            filteredCourses.sort((a, b) => {
-                const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
-                const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
-                return dateB - dateA;
-            });
-    }
+case 'newest':
+default:
+    filteredCourses.sort((a, b) => {
+        // 간단한 날짜 처리
+        const dateA = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+        const dateB = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+        return dateB - dateA;
+    });
     
     // Reset displayed courses
     displayedCourses = 0;
