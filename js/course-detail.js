@@ -245,7 +245,7 @@ async function enrollCourse() {
 async function toggleWishlist() {
     if (!currentUser) {
         if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-            window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.href)}`;
+window.location.href = `${BASE_PATH}/login.html?redirect=${encodeURIComponent(window.location.href)}`;
         }
         return;
     }
@@ -320,7 +320,7 @@ async function loadRelatedCourses() {
         }
         
         container.innerHTML = relatedCourses.map(course => `
-            <div class="course-card" onclick="window.location.href='/course-detail.html?id=${course.id}'">
+            <div class="course-card" onclick="window.location.href='${BASE_PATH}/course-detail.html?id=${course.id}'">
                 <div class="course-card-image">
                     <img src="${course.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'}" 
                          alt="${course.name}">
