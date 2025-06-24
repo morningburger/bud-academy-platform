@@ -1,13 +1,79 @@
+// Firebase v10 호환성 확인
+if (typeof firebase === 'undefined') {
+    console.error('Firebase SDK가 로드되지 않았습니다.');
+}
+
+// 전역 변수들 초기화
+let auth, db, BASE_PATH = '', utils, dbHelpers;
+
+// Firebase 앱이 초기화되었는지 확인하는 함수
+function waitForFirebase() {
+    return new Promise((resolve) => {
+        if (firebase.apps.length > 0) {
+            resolve();
+        } else {
+            setTimeout(() => waitForFirebase().then(resolve), 100);
+        }
+    });
+}
 // Auth page functionality
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
+    // Firebase 초기화 확인
+    if (typeof firebase === 'undefined') {
+        console.error('Firebase가 로드되지 않았습니다.');
+        alert('시스템 초기화 중 오류가 발생했습니다. 페이지를 새로고침해주세요.');
+        return;
+    }
+
+    // Auth 객체 초기화 (v10 문법)
+    if (typeof auth === 'undefined') {
+        window.auth = firebase.auth();
+    }
+    
+    // DB 객체 초기화 (v10 문법)
+    if (typeof db === 'undefined') {
+        window.db = firebase.firestore();
+    }
+
+    // BASE_PATH 설정
+    if (typeof BASE_PATH === 'undefined') {
+        window.BASE_PATH = '';
+    }
+
+    // utils 객체 확인
+    if (typeof utils === 'undefined') {
+        window.utils = {
+            showSuccess: function(message) {
+                alert(message);
+            }
+        };
+    }
+
+    // dbHelpers 객체 확인
+    if (typeof dbHelpers === 'undefined') {
+        window.dbHelpers = {
+            createUserProfile: async function(userData) {
+                return await db.collection('users').doc(userData.uid).set({
+                    name: userData.name,
+                    email: userData.email,
+                    photoURL: userData.photoURL || null,
+                    role: userData.role || 'student',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        };
+    }
+
     setupPasswordValidation();
     
-    // Check if user is already logged in
-    if (currentUser) {
-        window.location.href = `${BASE_PATH}/`;
-    }
+    // Check if user is already logged in (v10 문법)
+    auth.onAuthStateChanged(function(user) {
+        if (user) {
+            window.location.href = `${BASE_PATH}/`;
+        }
+    });
 });
 
 // Switch between forms
@@ -73,12 +139,12 @@ async function handleLogin(event) {
     const rememberMe = document.getElementById('remember-me').checked;
     
     try {
-        // Set persistence based on remember me
-        const persistence = rememberMe ? 
-            firebase.auth.Auth.Persistence.LOCAL : 
-            firebase.auth.Auth.Persistence.SESSION;
-        
-        await auth.setPersistence(persistence);
+// Set persistence based on remember me (v10 문법)
+const persistence = rememberMe ? 
+    firebase.auth.Auth.Persistence.LOCAL : 
+    firebase.auth.Auth.Persistence.SESSION;
+
+await auth.setPersistence(persistence);
         
         // Sign in
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
@@ -228,8 +294,8 @@ async function handleForgotPassword(event) {
 // Login with Google
 async function loginWithGoogle() {
     try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        const result = await auth.signInWithPopup(provider);
+const provider = new firebase.auth.GoogleAuthProvider();
+const result = await auth.signInWithPopup(provider);
         const user = result.user;
         
         // Check if user profile exists
