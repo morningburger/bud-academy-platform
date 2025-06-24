@@ -76,55 +76,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 });
 
-    // Auth 객체 초기화 (v10 문법)
-    if (typeof auth === 'undefined') {
-        window.auth = firebase.auth();
-    }
-    
-    // DB 객체 초기화 (v10 문법)
-    if (typeof db === 'undefined') {
-        window.db = firebase.firestore();
-    }
-
-    // BASE_PATH 설정
-    if (typeof BASE_PATH === 'undefined') {
-        window.BASE_PATH = '';
-    }
-
-    // utils 객체 확인
-    if (typeof utils === 'undefined') {
-        window.utils = {
-            showSuccess: function(message) {
-                alert(message);
-            }
-        };
-    }
-
-    // dbHelpers 객체 확인
-    if (typeof dbHelpers === 'undefined') {
-        window.dbHelpers = {
-            createUserProfile: async function(userData) {
-                return await db.collection('users').doc(userData.uid).set({
-                    name: userData.name,
-                    email: userData.email,
-                    photoURL: userData.photoURL || null,
-                    role: userData.role || 'student',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-        };
-    }
-
-    setupPasswordValidation();
-    
-    // Check if user is already logged in (v10 문법)
-    auth.onAuthStateChanged(function(user) {
-        if (user) {
-            window.location.href = `${BASE_PATH}/`;
-        }
-    });
-});
-
 // Switch between forms
 function switchToLogin() {
     hideAllForms();
