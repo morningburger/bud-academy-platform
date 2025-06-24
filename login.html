@@ -181,9 +181,60 @@
     <!-- Footer -->
     <footer id="main-footer"></footer>
 
-    <!-- Scripts -->
-    <script src="js/firebase-config.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/auth.js"></script>
+<!-- Scripts -->
+<script>
+// Firebase 설정 및 초기화
+const firebaseConfig = {
+  apiKey: "AIzaSyD5FWKbT5_D-XcP2lgmDQeQfzbskEcUrC8",
+  authDomain: "bud-academy.firebaseapp.com",
+  projectId: "bud-academy",
+  storageBucket: "bud-academy.firebasestorage.app",
+  messagingSenderId: "841659917747",
+  appId: "1:841659917747:web:345ca8d4bec9c192c017c6",
+  measurementId: "G-XBDN5JT4N5"
+};
+
+// Firebase 초기화
+firebase.initializeApp(firebaseConfig);
+
+// Firebase 객체들 전역 설정
+window.auth = firebase.auth();
+window.db = firebase.firestore();
+window.currentUser = null;
+
+// dbHelpers 객체 정의
+window.dbHelpers = {
+    createUserProfile: async function(userData) {
+        try {
+            await db.collection('users').doc(userData.uid).set({
+                name: userData.name,
+                email: userData.email,
+                photoURL: userData.photoURL || null,
+                role: userData.role || 'student',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            console.log('User profile created successfully');
+        } catch (error) {
+            console.error('Error creating user profile:', error);
+            throw error;
+        }
+    }
+};
+
+// 사용자 상태 감지
+auth.onAuthStateChanged(function(user) {
+    window.currentUser = user;
+    if (user) {
+        console.log('사용자 로그인됨:', user.email);
+    }
+});
+
+console.log('Firebase 초기화 완료');
+console.log('Auth:', typeof auth);
+console.log('DB:', typeof db);
+console.log('dbHelpers:', typeof dbHelpers);
+</script>
+<script src="js/common.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>
