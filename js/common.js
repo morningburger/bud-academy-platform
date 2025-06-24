@@ -1,6 +1,11 @@
 // Base path configuration for GitHub Pages
 const BASE_PATH = '/bud-academy-platform';
 
+// Global variables for Firebase
+let auth = null;
+let db = null;
+let currentUser = null;
+
 // Load header and footer
 document.addEventListener('DOMContentLoaded', function() {
     loadHeader();
@@ -113,8 +118,91 @@ function loadFooter() {
     }
 }
 
+// Initialize Firebase (Firebase 설정을 여기에 추가하세요)
+function initializeFirebase() {
+    // Firebase 설정 - 실제 프로젝트 정보로 교체하세요
+const firebaseConfig = {
+  apiKey: "AIzaSyD5FWKbT5_D-XcP2lgmDQeQfzbskEcUrC8",
+  authDomain: "bud-academy.firebaseapp.com",
+  projectId: "bud-academy",
+  storageBucket: "bud-academy.firebasestorage.app",
+  messagingSenderId: "841659917747",
+  appId: "1:841659917747:web:345ca8d4bec9c192c017c6",
+  measurementId: "G-XBDN5JT4N5"
+};
+
+    // Firebase 초기화
+    if (typeof firebase !== 'undefined') {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            
+            // Auth state listener
+            auth.onAuthStateChanged((user) => {
+                currentUser = user;
+                updateUserInterface();
+                checkAdminRole();
+            });
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+        }
+    } else {
+        console.warn('Firebase SDK not loaded');
+    }
+}
+
+// Update user interface based on auth state
+function updateUserInterface() {
+    const guestElements = document.querySelectorAll('.guest-only');
+    const authElements = document.querySelectorAll('.auth-required');
+    const userInfoElement = document.querySelector('.user-info');
+    
+    if (currentUser) {
+        // User is signed in
+        guestElements.forEach(el => el.classList.add('hidden'));
+        authElements.forEach(el => el.classList.remove('hidden'));
+        
+        if (userInfoElement) {
+            userInfoElement.innerHTML = `
+                <span class="user-name">${currentUser.displayName || currentUser.email}</span>
+                <button onclick="handleLogout()" class="btn btn-outline">로그아웃</button>
+            `;
+        }
+    } else {
+        // User is signed out
+        guestElements.forEach(el => el.classList.remove('hidden'));
+        authElements.forEach(el => el.classList.add('hidden'));
+        
+        if (userInfoElement) {
+            userInfoElement.innerHTML = '';
+        }
+    }
+}
+
+// Logout function
+async function handleLogout() {
+    try {
+        if (auth) {
+            await auth.signOut();
+            sessionStorage.removeItem('isAdmin');
+            sessionStorage.removeItem('adminUser');
+            utils.showSuccess('로그아웃되었습니다.');
+            setTimeout(() => {
+                window.location.href = `${BASE_PATH}/`;
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        alert('로그아웃 중 오류가 발생했습니다.');
+    }
+}
+
 // Initialize common functionality
 function initializeCommon() {
+    // Initialize Firebase first
+    initializeFirebase();
+    
     // Mobile menu toggle
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const navMain = document.getElementById('navMain');
@@ -125,53 +213,60 @@ function initializeCommon() {
             
             // Change icon
             const icon = mobileMenuToggle.querySelector('i');
-            if (navMain.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+            if (icon) {
+                if (navMain.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
             }
         });
     }
     
     // Header scroll effect
     const header = document.getElementById('header');
-    let lastScroll = 0;
-    
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
+    if (header) {
+        let lastScroll = 0;
         
-        if (currentScroll > 100) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-        
-        lastScroll = currentScroll;
-    });
-    
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
+            
+            lastScroll = currentScroll;
         });
-    });
+    }
     
-    // Check admin role
-    checkAdminRole();
+    // Smooth scroll for anchor links - 수정된 부분
+    setTimeout(() => {
+        const anchorLinks = document.querySelectorAll('a[href^="#"]');
+        anchorLinks.forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    }, 100);
 }
 
 // Check if user is admin
 async function checkAdminRole() {
-    if (currentUser) {
+    if (currentUser && db) {
         try {
             const userDoc = await db.collection('users').doc(currentUser.uid).get();
             if (userDoc.exists && userDoc.data().role === 'admin') {
@@ -183,7 +278,38 @@ async function checkAdminRole() {
             console.error('Error checking admin role:', error);
         }
     }
+    
+    // Check session admin status
+    if (sessionStorage.getItem('isAdmin') === 'true') {
+        document.querySelectorAll('.admin-only').forEach(el => {
+            el.classList.remove('hidden');
+        });
+    }
 }
+
+// Database helpers
+const dbHelpers = {
+    async createUserProfile(userData) {
+        if (!db) {
+            throw new Error('Database not initialized');
+        }
+        
+        try {
+            await db.collection('users').doc(userData.uid).set({
+                name: userData.name,
+                email: userData.email,
+                role: userData.role || 'student',
+                photoURL: userData.photoURL || null,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            return true;
+        } catch (error) {
+            console.error('Error creating user profile:', error);
+            throw error;
+        }
+    }
+};
 
 // Format price
 function formatPrice(price) {
@@ -207,17 +333,21 @@ function formatDate(date) {
 
 // Show loading
 function showLoading(container) {
-    container.innerHTML = '<div class="loading-container"><div class="loading"></div></div>';
+    if (container) {
+        container.innerHTML = '<div class="loading-container"><div class="loading"></div></div>';
+    }
 }
 
 // Show error message
 function showError(container, message) {
-    container.innerHTML = `
-        <div class="error-message">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>${message}</p>
-        </div>
-    `;
+    if (container) {
+        container.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>${message}</p>
+            </div>
+        `;
+    }
 }
 
 // Show success message
@@ -255,3 +385,5 @@ const utils = {
 // Export for use in other files
 window.utils = utils;
 window.BASE_PATH = BASE_PATH;
+window.dbHelpers = dbHelpers;
+window.handleLogout = handleLogout;
