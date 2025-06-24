@@ -541,13 +541,31 @@ async function saveCourse(event) {
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
         
-        // Handle image upload if there's a new image
-        const imageFile = form.image.files[0];
-        if (imageFile) {
-            // In a real app, upload to Firebase Storage
-            // For now, use a placeholder
-            formData.image = 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800';
-        }
+// Handle image upload if there's a new image
+const imageFile = form.image.files[0];
+if (imageFile) {
+    try {
+        // Firebase Storage에 이미지 업로드
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child(`courses/${Date.now()}_${imageFile.name}`);
+        
+        // 파일 업로드
+        const snapshot = await imageRef.put(imageFile);
+        
+        // 다운로드 URL 가져오기
+        const downloadURL = await snapshot.ref.getDownloadURL();
+        formData.image = downloadURL;
+        
+        console.log('Image uploaded successfully:', downloadURL);
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        alert('이미지 업로드 중 오류가 발생했습니다.');
+        return; // 이미지 업로드 실패시 저장 중단
+    }
+} else if (!editingCourseId) {
+    // 새 과정 추가시 이미지가 없으면 기본 이미지 사용
+    formData.image = 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800';
+}
         
         if (editingCourseId) {
             // Update existing course
