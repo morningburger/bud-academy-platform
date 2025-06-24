@@ -4,7 +4,7 @@ if (typeof firebase === 'undefined') {
 }
 
 // 전역 변수들 초기화
-let auth, db, BASE_PATH = '', utils, dbHelpers;
+let auth, db, dbHelpers;
 
 // Firebase 앱이 초기화되었는지 확인하는 함수
 function waitForFirebase() {
@@ -29,17 +29,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         // DB 객체 초기화  
         window.db = firebase.firestore();
-
-        // BASE_PATH 설정
-        window.BASE_PATH = '';
-
-        // utils 객체 초기화
-        window.utils = {
-            showSuccess: function(message) {
-                alert(message);
-                console.log('Success:', message);
-            }
-        };
 
         // dbHelpers 객체 초기화
         window.dbHelpers = {
