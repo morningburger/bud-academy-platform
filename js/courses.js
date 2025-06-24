@@ -92,15 +92,15 @@ function applyFilters() {
         case 'price-high':
             filteredCourses.sort((a, b) => b.price - a.price);
             break;
-case 'newest':
-default:
-    filteredCourses.sort((a, b) => {
-        // 간단한 날짜 처리
-        const dateA = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-        const dateB = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
-        return dateB - dateA;
-    });
-    break; // ✅ break 문 추가
+        case 'newest':
+        default:
+            filteredCourses.sort((a, b) => {
+                const dateA = a.createdAt && a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+                const dateB = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+                return dateB - dateA;
+            });
+            break;
+    }
     
     // Reset displayed courses
     displayedCourses = 0;
@@ -112,7 +112,6 @@ default:
     // Close dropdowns
     closeAllDropdowns();
 }
-
 // Clear filters
 function clearFilters() {
     document.querySelector('input[name="category"][value="all"]').checked = true;
