@@ -127,7 +127,7 @@ function displayCourseDetail() {
     document.getElementById('course-time').textContent = 
         `${currentCourse.startTime} ~ ${currentCourse.endTime}`;
     document.getElementById('course-capacity').textContent = 
-        `${currentCourse.maxStudents || 20}명`;
+        `${currentCourse.maxEnrollments || 20}명`;
     document.getElementById('course-sessions').textContent = 
         `${currentCourse.sessions}회 ${currentCourse.extraSessions ? `(+${currentCourse.extraSessions}회)` : ''}`;
     
@@ -137,8 +137,8 @@ function displayCourseDetail() {
 
 // Update enrollment status
 function updateEnrollmentStatus() {
-    const enrollments = currentCourse.currentStudents || 0;
-    const maxEnrollments = currentCourse.maxStudents || 20;
+    const enrollments = currentCourse.enrollments || 0;
+    const maxEnrollments = currentCourse.maxEnrollments || 20;
     const percentage = (enrollments / maxEnrollments) * 100;
     
     document.getElementById('enrollment-bar').style.width = `${percentage}%`;
@@ -227,7 +227,7 @@ async function enrollCourse() {
         if (success) {
             utils.showSuccess('수강신청이 완료되었습니다!');
             isEnrolled = true;
-currentCourse.currentStudents = (currentCourse.currentStudents || 0) + 1;
+            currentCourse.enrollments = (currentCourse.enrollments || 0) + 1;
             updateEnrollmentStatus();
         } else {
             throw new Error('Enrollment failed');
