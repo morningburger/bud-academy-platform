@@ -49,10 +49,10 @@ function displayCourseDetail() {
     document.title = `${currentCourse.name} - BUD ACADEMY`;
     
     // Hero section
-    const heroBackground = document.querySelector('.hero-background::before');
-    if (heroBackground) {
-        heroBackground.style.backgroundImage = `url('${currentCourse.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1600'}')`;
-    }
+const heroBackground = document.querySelector('.hero-background');
+if (heroBackground && currentCourse.image) {
+    heroBackground.style.setProperty('--hero-bg-image', `url('${currentCourse.image}')`);
+}
     
     document.querySelector('.course-badges').innerHTML = `
         <span class="badge">${currentCourse.type}</span>
@@ -93,8 +93,10 @@ function displayCourseDetail() {
     if (currentCourse.instructor) {
         document.getElementById('instructor-info').innerHTML = `
             <div class="instructor-image">
-                <img src="${currentCourse.instructor.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300'}" 
-                     alt="${currentCourse.instructor.name}">
+${currentCourse.instructor.image ? 
+    `<img src="${currentCourse.instructor.image}" alt="${currentCourse.instructor.name}">` : 
+    '<div class="instructor-placeholder">사진 준비중</div>'
+}
             </div>
             <div class="instructor-details">
                 <h3>${currentCourse.instructor.name}</h3>
@@ -118,8 +120,12 @@ function displayCourseDetail() {
     }
     
     // Sidebar card
-    document.getElementById('course-image').style.backgroundImage = 
-        `url('${currentCourse.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'}')`;
+const courseImageElement = document.getElementById('course-image');
+if (currentCourse.image) {
+    courseImageElement.style.backgroundImage = `url('${currentCourse.image}')`;
+} else {
+    courseImageElement.innerHTML = '<div class="image-placeholder">이미지 준비중</div>';
+}
     
     document.getElementById('course-price').textContent = utils.formatPrice(currentCourse.price);
     document.getElementById('course-dates').textContent = 
@@ -322,8 +328,10 @@ async function loadRelatedCourses() {
         container.innerHTML = relatedCourses.map(course => `
             <div class="course-card" onclick="window.location.href='${BASE_PATH}/course-detail.html?id=${course.id}'">
                 <div class="course-card-image">
-                    <img src="${course.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'}" 
-                         alt="${course.name}">
+${course.image ? 
+    `<img src="${course.image}" alt="${course.name}">` : 
+    '<div class="course-placeholder">이미지 준비중</div>'
+}
                     <div class="course-type-badge">${course.type}</div>
                 </div>
                 <div class="course-card-content">
