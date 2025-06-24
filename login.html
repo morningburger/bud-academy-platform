@@ -184,7 +184,7 @@
 
 <!-- Scripts -->
 <script>
-// Firebase 설정 및 초기화
+// Firebase v10 호환 설정
 const firebaseConfig = {
   apiKey: "AIzaSyD5FWKbT5_D-XcP2lgmDQeQfzbskEcUrC8",
   authDomain: "bud-academy.firebaseapp.com",
@@ -195,46 +195,174 @@ const firebaseConfig = {
   measurementId: "G-XBDN5JT4N5"
 };
 
-// Firebase 초기화
-firebase.initializeApp(firebaseConfig);
-
-// Firebase 객체들 전역 설정
-window.auth = firebase.auth();
-window.db = firebase.firestore();
-window.currentUser = null;
-
-// dbHelpers 객체 정의
-window.dbHelpers = {
-    createUserProfile: async function(userData) {
+// Firebase SDK 로드 확인 및 초기화
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM 로드 완료, Firebase 초기화 시작');
+  
+  // Firebase SDK 로드 확인
+  if (typeof firebase === 'undefined') {
+    console.error('Firebase SDK가 로드되지 않았습니다. HTML에서 Firebase 스크립트 태그를 확인하세요.');
+    return;
+  }
+  
+  console.log('Firebase SDK 버전:', firebase.SDK_VERSION);
+  
+  try {
+    // Firebase 앱 중복 초기화 방지
+    let app;
+    if (firebase.apps.length === 0) {
+      app = firebase.initializeApp(firebaseConfig);
+      console.log('Firebase 앱 초기화 성공');
+    } else {
+      app = firebase.app();
+      console.log('기존 Firebase 앱 사용');
+    }
+    
+    // Firebase 서비스 초기화
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+    
+    // Firestore 오프라인 캐시 설정 (선택사항)
+    try {
+      window.db.enablePersistence({ synchronizeTabs: true })
+        .then(() => console.log('Firestore 오프라인 지원 활성화'))
+        .catch((err) => {
+          if (err.code === 'failed-precondition') {
+            console.log('여러 탭이 열려있어 오프라인 지원 비활성화');
+          } else if (err.code === 'unimplemented') {
+            console.log('브라우저가 오프라인 지원을 지원하지 않음');
+          }
+        });
+    } catch (err) {
+      console.log('오프라인 지원 설정 건너뛰기');
+    }
+    
+    // Auth 상태 리스너 설정
+    window.auth.onAuthStateChanged(function(user) {
+      window.currentUser = user;
+      console.log('Auth 상태 변경:', user ? `로그인됨 (${user.email})` : '로그아웃됨');
+      
+      // UI 업데이트 (common.js의 함수가 있다면)
+      if (typeof updateUserInterface === 'function') {
+        updateUserInterface();
+      }
+    });
+    
+    // dbHelpers 전역 객체 정의
+    window.dbHelpers = {
+      createUserProfile: async function(userData) {
+        console.log('사용자 프로필 생성 시작:', userData);
+        
         try {
-            await db.collection('users').doc(userData.uid).set({
-                name: userData.name,
-                email: userData.email,
-                photoURL: userData.photoURL || null,
-                role: userData.role || 'student',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            console.log('User profile created successfully');
+          const userRef = window.db.collection('users').doc(userData.uid);
+          const profileData = {
+            name: userData.name,
+            email: userData.email,
+            photoURL: userData.photoURL || null,
+            role: userData.role || 'student',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          
+          await userRef.set(profileData);
+          console.log('사용자 프로필 생성 완료');
+          return true;
+          
         } catch (error) {
-            console.error('Error creating user profile:', error);
-            throw error;
+          console.error('사용자 프로필 생성 실패:', error);
+          throw new Error(`프로필 생성 실패: ${error.message}`);
         }
-    }
-};
-
-// 사용자 상태 감지
-auth.onAuthStateChanged(function(user) {
-    window.currentUser = user;
-    if (user) {
-        console.log('사용자 로그인됨:', user.email);
-    }
+      },
+      
+      getUserProfile: async function(uid) {
+        try {
+          const userDoc = await window.db.collection('users').doc(uid).get();
+          if (userDoc.exists) {
+            return userDoc.data();
+          } else {
+            throw new Error('사용자 프로필을 찾을 수 없습니다');
+          }
+        } catch (error) {
+          console.error('사용자 프로필 조회 실패:', error);
+          throw error;
+        }
+      }
+    };
+    
+    // 연결 테스트 함수
+    window.testFirebaseConnection = async function() {
+      console.log('=== Firebase 연결 테스트 시작 ===');
+      
+      try {
+        // 1. Auth 서비스 테스트
+        console.log('1. Auth 서비스 상태:', window.auth ? '✓ 정상' : '✗ 실패');
+        console.log('   현재 사용자:', window.auth.currentUser?.email || '로그인되지 않음');
+        
+        // 2. Firestore 서비스 테스트
+        console.log('2. Firestore 서비스 상태:', window.db ? '✓ 정상' : '✗ 실패');
+        
+        // 3. Firestore 연결 테스트 (읽기)
+        console.log('3. Firestore 연결 테스트 중...');
+        const testCollection = window.db.collection('connection-test');
+        const testDoc = testCollection.doc('test-' + Date.now());
+        
+        // 쓰기 테스트
+        await testDoc.set({
+          message: 'Firebase 연결 테스트',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          success: true
+        });
+        console.log('   쓰기 테스트: ✓ 성공');
+        
+        // 읽기 테스트
+        const docSnapshot = await testDoc.get();
+        if (docSnapshot.exists) {
+          console.log('   읽기 테스트: ✓ 성공');
+          console.log('   데이터:', docSnapshot.data());
+        } else {
+          console.log('   읽기 테스트: ✗ 문서를 찾을 수 없음');
+        }
+        
+        // 테스트 문서 삭제
+        await testDoc.delete();
+        console.log('   삭제 테스트: ✓ 성공');
+        
+        console.log('=== Firebase 연결 테스트 완료: 모든 서비스 정상 ===');
+        return true;
+        
+      } catch (error) {
+        console.error('=== Firebase 연결 테스트 실패 ===');
+        console.error('오류 코드:', error.code);
+        console.error('오류 메시지:', error.message);
+        console.error('전체 오류:', error);
+        return false;
+      }
+    };
+    
+    // 초기화 완료 로그
+    console.log('=== Firebase 초기화 완료 ===');
+    console.log('Auth:', typeof window.auth);
+    console.log('Firestore:', typeof window.db);
+    console.log('dbHelpers:', typeof window.dbHelpers);
+    
+    // 자동 연결 테스트 (선택사항)
+    setTimeout(() => {
+      console.log('자동 연결 테스트 시작...');
+      window.testFirebaseConnection();
+    }, 2000);
+    
+  } catch (error) {
+    console.error('Firebase 초기화 중 오류 발생:', error);
+    console.error('오류 상세:', {
+      code: error.code,
+      message: error.message,
+      stack: error.stack
+    });
+  }
 });
-
-console.log('Firebase 초기화 완료');
-console.log('Auth:', typeof auth);
-console.log('DB:', typeof db);
-console.log('dbHelpers:', typeof dbHelpers);
 </script>
+
+<!-- 기타 JavaScript 파일들 -->
 <script src="js/common.js"></script>
 <script src="js/auth.js"></script>
 </body>
