@@ -46,6 +46,84 @@ document.addEventListener('DOMContentLoaded', async function() {
             createUserProfile: async function(userData) {
                 try {
                     await db.collection('users').doc(userData.uid).set({
+                        name: userData.name,
+                        email: userData.email,
+                        photoURL: userData.photoURL || null,
+                        role: userData.role || 'student',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log('User profile created successfully');
+                } catch (error) {
+                    console.error('Error creating user profile:', error);
+                    throw error;
+                }
+            }
+        };
+
+        setupPasswordValidation();
+        
+        // Check if user is already logged in
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                window.currentUser = user;
+                window.location.href = `${BASE_PATH}/`;
+            }
+        });
+
+    } catch (error) {
+        console.error('Firebase 초기화 오류:', error);
+        alert('시스템 초기화 중 오류가 발생했습니다. 페이지를 새로고침해주세요.');
+    }
+});
+
+    // Auth 객체 초기화 (v10 문법)
+    if (typeof auth === 'undefined') {
+        window.auth = firebase.auth();
+    }
+    
+    // DB 객체 초기화 (v10 문법)
+    if (typeof db === 'undefined') {
+        window.db = firebase.firestore();
+    }
+
+    // BASE_PATH 설정
+    if (typeof BASE_PATH === 'undefined') {
+        window.BASE_PATH = '';
+    }
+
+    // utils 객체 확인
+    if (typeof utils === 'undefined') {
+        window.utils = {
+            showSuccess: function(message) {
+                alert(message);
+            }
+        };
+    }
+
+    // dbHelpers 객체 확인
+    if (typeof dbHelpers === 'undefined') {
+        window.dbHelpers = {
+            createUserProfile: async function(userData) {
+                return await db.collection('users').doc(userData.uid).set({
+                    name: userData.name,
+                    email: userData.email,
+                    photoURL: userData.photoURL || null,
+                    role: userData.role || 'student',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        };
+    }
+
+    setupPasswordValidation();
+    
+    // Check if user is already logged in (v10 문법)
+    auth.onAuthStateChanged(function(user) {
+        if (user) {
+            window.location.href = `${BASE_PATH}/`;
+        }
+    });
+});
 
 // Switch between forms
 function switchToLogin() {
