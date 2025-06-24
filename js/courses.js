@@ -171,10 +171,9 @@ function createCourseHTML(course) {
     return `
         <div class="course-item fade-in" onclick="window.location.href='${BASE_PATH}/course-detail.html?id=${course.id}'">
             <div class="course-image">
-                ${course.image ? 
-                    `<img src="${course.image}" alt="${course.name}" loading="lazy">` : 
-                    '<div class="course-placeholder">이미지 준비중</div>'
-                }
+                <img src="${course.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'}" 
+                     alt="${course.name}"
+                     loading="lazy">
                 <div class="course-badges">
                     <span class="badge badge-type">${course.type}</span>
                     ${course.featured ? '<span class="badge">FEATURED</span>' : ''}
