@@ -365,5 +365,36 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- 기타 JavaScript 파일들 -->
 <script src="js/common.js"></script>
 <script src="js/auth.js"></script>
+    <script>
+// 관리자 모달 제어 함수들
+function showAdminLogin() {
+    const modal = document.getElementById('admin-modal');
+    modal.classList.remove('hidden');
+    document.body.classList.add('modal-open'); // body 스크롤 방지
+}
+
+function closeAdminModal() {
+    const modal = document.getElementById('admin-modal');
+    modal.classList.add('hidden');
+    document.body.classList.remove('modal-open'); // body 스크롤 복원
+}
+
+// 모달 배경 클릭으로 닫기
+document.getElementById('admin-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeAdminModal();
+    }
+});
+
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('admin-modal');
+        if (!modal.classList.contains('hidden')) {
+            closeAdminModal();
+        }
+    }
+});
+</script>
 </body>
 </html>
