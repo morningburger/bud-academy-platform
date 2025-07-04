@@ -5,6 +5,18 @@ let isWishlisted = false;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async function() {
+    // 헤더/푸터 로드 대기
+    await new Promise(resolve => {
+        const checkCommon = () => {
+            if (typeof loadHeader === 'function' && typeof loadFooter === 'function') {
+                resolve();
+            } else {
+                setTimeout(checkCommon, 100);
+            }
+        };
+        checkCommon();
+    });
+    
     const courseId = getCourseIdFromURL();
     
     if (!courseId) {
@@ -44,10 +56,24 @@ async function loadCourseDetail(courseId) {
         
     } catch (error) {
         console.error('Error loading course:', error);
-        alert('교육과정을 불러올 수 없습니다.');
-        window.location.href = `${BASE_PATH}/courses.html`;
+        
+        const heroSection = document.querySelector('.course-hero');
+        const contentMain = document.querySelector('.content-main');
+        
+        if (heroSection && contentMain) {
+            heroSection.innerHTML = '';
+            contentMain.innerHTML = `
+                <div class="error-message">
+                    <h2>교육과정을 불러올 수 없습니다</h2>
+                    <p>잠시 후 다시 시도해주세요.</p>
+                    <button class="retry-btn" onclick="window.location.reload()">다시 시도</button>
+                </div>
+            `;
+        } else {
+            alert('교육과정을 불러올 수 없습니다.');
+            window.location.href = `${BASE_PATH}/courses.html`;
+        }
     }
-}
 
 // Display course detail
 function displayCourseDetail() {
@@ -227,23 +253,7 @@ function updateWishlistIcon() {
     }
 }
 
-// Enroll in course
-async function enrollCourse() {
-    if (!currentUser) {
-        if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-            window.location.href = `${BASE_PATH}/login.html?redirect=${encodeURIComponent(window.location.href)}`;
-        }
-        return;
-    }
-    
-    if (isEnrolled) {
-        alert('이미 신청한 교육과정입니다.');
-        return;
-    }
-    
-    const enrollBtn = document.getElementById('enroll-btn');
-    const originalText = enrollBtn.textContent;
-    
+// Enroll in cours   
 async function enrollCourse() {
     if (!currentUser) {
         if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
@@ -291,7 +301,7 @@ async function enrollCourse() {
         enrollBtn.disabled = false;
     }
 }
-}
+
 
 // Toggle wishlist
 async function toggleWishlist() {
@@ -428,8 +438,22 @@ function getCategoryName(category) {
 
 // Show loading state
 function showLoadingState() {
-    document.querySelector('.course-hero').innerHTML = '<div class="skeleton-hero"></div>';
-    document.querySelector('.content-main').innerHTML = '<div class="skeleton-content"></div>';
+    const heroSection = document.querySelector('.course-hero');
+    const contentMain = document.querySelector('.content-main');
+    
+    if (heroSection) {
+        heroSection.innerHTML = '<div class="skeleton-hero"></div>';
+    }
+    
+    if (contentMain) {
+        contentMain.innerHTML = `
+            <div class="skeleton-content">
+                <div class="skeleton-block"></div>
+                <div class="skeleton-block"></div>
+                <div class="skeleton-block"></div>
+            </div>
+        `;
+    }
 }
 
 // Open lightbox (placeholder)
