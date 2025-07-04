@@ -28,11 +28,17 @@ async function loadCourseDetail(courseId) {
     try {
         showLoadingState();
         
-        currentCourse = await dbHelpers.getCourse(courseId);
+        // Firebase에서 직접 코스 데이터 가져오기
+        const courseDoc = await db.collection('courses').doc(courseId).get();
         
-        if (!currentCourse) {
+        if (!courseDoc.exists) {
             throw new Error('Course not found');
         }
+        
+        currentCourse = {
+            id: courseDoc.id,
+            ...courseDoc.data()
+        };
         
         displayCourseDetail();
         
@@ -60,8 +66,9 @@ function displayCourseDetail() {
         ${currentCourse.featured ? '<span class="badge">FEATURED</span>' : ''}
     `;
     
-    document.querySelector('.course-title').textContent = currentCourse.name;
-    document.querySelector('.course-subtitle').textContent = currentCourse.subtitle || currentCourse.description;
+document.querySelector('.course-title').textContent = currentCourse.name;
+document.querySelector('.course-subtitle').textContent = 
+    currentCourse.subtitle || currentCourse.description || '교육과정 소개';
     
     // Course description
     document.getElementById('course-description').innerHTML = `
@@ -128,10 +135,12 @@ function displayCourseDetail() {
     }
     
     document.getElementById('course-price').textContent = utils.formatPrice(currentCourse.price);
-    document.getElementById('course-dates').textContent = 
-        `${formatDate(currentCourse.startDate)} ~ ${formatDate(currentCourse.endDate)}`;
-    document.getElementById('course-time').textContent = 
-        `${currentCourse.startTime} ~ ${currentCourse.endTime}`;
+const startDate = currentCourse.startDate ? formatDate(currentCourse.startDate) : '날짜 미정';
+const endDate = currentCourse.endDate ? formatDate(currentCourse.endDate) : '날짜 미정';
+
+document.getElementById('course-dates').textContent = `${startDate} ~ ${endDate}`;
+document.getElementById('course-time').textContent = 
+    `${currentCourse.startTime || '시간 미정'} ~ ${currentCourse.endTime || '시간 미정'}`;
     document.getElementById('course-capacity').textContent = 
         `${currentCourse.maxEnrollments || 20}명`;
     document.getElementById('course-sessions').textContent = 
@@ -168,11 +177,22 @@ function updateEnrollmentStatus() {
 // Check enrollment status
 async function checkEnrollmentStatus(courseId) {
     if (currentUser) {
-        isEnrolled = await dbHelpers.checkEnrollment(courseId);
-        updateEnrollmentStatus();
-        
-        // Check wishlist status
-        await checkWishlistStatus(courseId);
+        try {
+            // Firebase에서 직접 수강신청 상태 확인
+            const enrollmentDoc = await db.collection('enrollments')
+                .where('userId', '==', currentUser.uid)
+                .where('courseId', '==', courseId)
+                .where('status', '==', 'active')
+                .get();
+            
+            isEnrolled = !enrollmentDoc.empty;
+            updateEnrollmentStatus();
+            
+            // Check wishlist status
+            await checkWishlistStatus(courseId);
+        } catch (error) {
+            console.error('Error checking enrollment:', error);
+        }
     }
 }
 
@@ -228,8 +248,24 @@ async function enrollCourse() {
         enrollBtn.disabled = true;
         enrollBtn.innerHTML = '<div class="loading"></div>';
         
-        const success = await dbHelpers.enrollCourse(currentCourse.id);
-        
+// dbHelpers.enrollCourse() 대신 직접 구현
+try {
+    // 수강신청 문서 생성
+    await db.collection('enrollments').add({
+        userId: currentUser.uid,
+        courseId: currentCourse.id,
+        courseName: currentCourse.name,
+        coursePrice: currentCourse.price,
+        status: 'active',
+        enrolledAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    
+    // 코스의 enrollments 수 증가
+    await db.collection('courses').doc(currentCourse.id).update({
+        enrollments: firebase.firestore.FieldValue.increment(1)
+    });
+    
+    const success = true;        
         if (success) {
             utils.showSuccess('수강신청이 완료되었습니다!');
             isEnrolled = true;
@@ -309,9 +345,19 @@ function shareCourse() {
 // Load related courses
 async function loadRelatedCourses() {
     try {
-        const courses = await dbHelpers.getCourses({ 
-            category: currentCourse.category 
-        });
+// Firebase에서 직접 관련 코스 가져오기
+const coursesSnapshot = await db.collection('courses')
+    .where('category', '==', currentCourse.category)
+    .limit(10)
+    .get();
+
+const courses = [];
+coursesSnapshot.forEach(doc => {
+    courses.push({
+        id: doc.id,
+        ...doc.data()
+    });
+});
         
         // Filter out current course and limit to 3
         const relatedCourses = courses
