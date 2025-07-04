@@ -70,7 +70,7 @@ a {
     left: 0;
     right: 0;
     background: var(--white);
-    z-index: 100;
+    z-index: 1000;
     transition: var(--transition);
 }
 
