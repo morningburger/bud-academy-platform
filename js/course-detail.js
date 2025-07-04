@@ -244,36 +244,45 @@ async function enrollCourse() {
     const enrollBtn = document.getElementById('enroll-btn');
     const originalText = enrollBtn.textContent;
     
+async function enrollCourse() {
+    if (!currentUser) {
+        if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+            window.location.href = `${BASE_PATH}/login.html?redirect=${encodeURIComponent(window.location.href)}`;
+        }
+        return;
+    }
+    
+    if (isEnrolled) {
+        alert('이미 신청한 교육과정입니다.');
+        return;
+    }
+    
+    const enrollBtn = document.getElementById('enroll-btn');
+    const originalText = enrollBtn.textContent;
+    
     try {
         enrollBtn.disabled = true;
         enrollBtn.innerHTML = '<div class="loading"></div>';
         
-// dbHelpers.enrollCourse() 대신 직접 구현
-try {
-    // 수강신청 문서 생성
-    await db.collection('enrollments').add({
-        userId: currentUser.uid,
-        courseId: currentCourse.id,
-        courseName: currentCourse.name,
-        coursePrice: currentCourse.price,
-        status: 'active',
-        enrolledAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    
-    // 코스의 enrollments 수 증가
-    await db.collection('courses').doc(currentCourse.id).update({
-        enrollments: firebase.firestore.FieldValue.increment(1)
-    });
-    
-    const success = true;        
-        if (success) {
-            utils.showSuccess('수강신청이 완료되었습니다!');
-            isEnrolled = true;
-            currentCourse.enrollments = (currentCourse.enrollments || 0) + 1;
-            updateEnrollmentStatus();
-        } else {
-            throw new Error('Enrollment failed');
-        }
+        // 수강신청 문서 생성
+        await db.collection('enrollments').add({
+            userId: currentUser.uid,
+            courseId: currentCourse.id,
+            courseName: currentCourse.name,
+            coursePrice: currentCourse.price,
+            status: 'active',
+            enrolledAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        // 코스의 enrollments 수 증가
+        await db.collection('courses').doc(currentCourse.id).update({
+            enrollments: firebase.firestore.FieldValue.increment(1)
+        });
+        
+        utils.showSuccess('수강신청이 완료되었습니다!');
+        isEnrolled = true;
+        currentCourse.enrollments = (currentCourse.enrollments || 0) + 1;
+        updateEnrollmentStatus();
         
     } catch (error) {
         console.error('Error enrolling course:', error);
@@ -281,6 +290,7 @@ try {
         enrollBtn.textContent = originalText;
         enrollBtn.disabled = false;
     }
+}
 }
 
 // Toggle wishlist
