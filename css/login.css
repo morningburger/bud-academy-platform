@@ -213,10 +213,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
+    z-index: 9999;
     padding: 24px;
+    overflow-y: auto;
+}
+.modal.hidden {
+    display: none;
 }
 
+.modal-content {
+    background: var(--white);
+    max-width: 500px;
+    width: 100%;
+    padding: 40px;
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); /* 그림자 추가 */
+    position: relative;
+    max-height: 90vh; /* 최대 높이 제한 */
+    overflow-y: auto; /* 내용이 많을 때 스크롤 */
+    margin: auto; /* 중앙 정렬 */
+}
 .modal-content {
     background: var(--white);
     max-width: 500px;
@@ -416,4 +432,30 @@
 button[disabled] {
     opacity: 0.6;
     cursor: not-allowed;
+}
+/* 모달이 열렸을 때 body 스크롤 방지 */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* 모달 배경 클릭으로 닫기 */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+/* 모바일에서 모달 개선 */
+@media (max-width: 480px) {
+    .modal {
+        padding: 12px;
+    }
+    
+    .modal-content {
+        padding: 24px;
+        max-height: 95vh;
+    }
 }
