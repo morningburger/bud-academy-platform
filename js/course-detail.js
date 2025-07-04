@@ -74,7 +74,7 @@ async function loadCourseDetail(courseId) {
             window.location.href = `${BASE_PATH}/courses.html`;
         }
     }
-
+}
 // Display course detail
 function displayCourseDetail() {
     // Update page title
