@@ -46,22 +46,27 @@ async function loadCourseDetail(courseId) {
     } catch (error) {
         console.error('Error loading course:', error);
         
-        const heroSection = document.querySelector('.course-hero');
-        const contentMain = document.querySelector('.content-main');
+        // 요소가 준비될 때까지 대기
+        const waitForElements = () => {
+            const heroSection = document.querySelector('.course-hero');
+            const contentMain = document.querySelector('.content-main');
+            
+            if (heroSection && contentMain) {
+                heroSection.innerHTML = '';
+                contentMain.innerHTML = `
+                    <div class="error-message">
+                        <h2>교육과정을 불러올 수 없습니다</h2>
+                        <p>잠시 후 다시 시도해주세요.</p>
+                        <button class="retry-btn" onclick="window.location.reload()">다시 시도</button>
+                    </div>
+                `;
+            } else {
+                // 요소가 없으면 잠시 후 다시 시도
+                setTimeout(waitForElements, 100);
+            }
+        };
         
-        if (heroSection && contentMain) {
-            heroSection.innerHTML = '';
-            contentMain.innerHTML = `
-                <div class="error-message">
-                    <h2>교육과정을 불러올 수 없습니다</h2>
-                    <p>잠시 후 다시 시도해주세요.</p>
-                    <button class="retry-btn" onclick="window.location.reload()">다시 시도</button>
-                </div>
-            `;
-        } else {
-            alert('교육과정을 불러올 수 없습니다.');
-            window.location.href = `${BASE_PATH}/courses.html`;
-        }
+        waitForElements();
     }
 }
 // Display course detail
