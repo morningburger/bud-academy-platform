@@ -17,17 +17,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     await loadRelatedCourses();
 });
     
-    const courseId = getCourseIdFromURL();
-    
-    if (!courseId) {
-        window.location.href = `${BASE_PATH}/courses.html`;
-        return;
-    }
-    
-    await loadCourseDetail(courseId);
-    await checkEnrollmentStatus(courseId);
-    await loadRelatedCourses();
-});
+
 
 // Get course ID from URL
 function getCourseIdFromURL() {
