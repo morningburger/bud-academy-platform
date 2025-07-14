@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
     
 
-
 // Get course ID from URL
 function getCourseIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
