@@ -5,17 +5,17 @@ let isWishlisted = false;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async function() {
-    // 헤더/푸터 로드 대기
-    await new Promise(resolve => {
-        const checkCommon = () => {
-            if (typeof loadHeader === 'function' && typeof loadFooter === 'function') {
-                resolve();
-            } else {
-                setTimeout(checkCommon, 100);
-            }
-        };
-        checkCommon();
-    });
+    const courseId = getCourseIdFromURL();
+    
+    if (!courseId) {
+        window.location.href = `${BASE_PATH}/courses.html`;
+        return;
+    }
+    
+    await loadCourseDetail(courseId);
+    await checkEnrollmentStatus(courseId);
+    await loadRelatedCourses();
+});
     
     const courseId = getCourseIdFromURL();
     
